@@ -63,5 +63,22 @@ public class RepositorioContasArray {
            }
        }
    }
+   public boolean exiteConta(String numeroConta) {
+   	for(int i=0;i<tamCacheContas;i++) {
+   		if(numeroConta.equals(contas.numero)) {
+   			return true;
+   		}
+   	}
+   	return false;  	
+   }
+   
+   public Conta procurarConta(String numeroConta) {
+   	for(int i=0;i<tamCacheContas;i++) {
+   		if(numeroConta.equals(contas[i].numero)) {
+   			return contas.[i];
+   		}
+   	}
+   	return null; 
+   }
 }
    
