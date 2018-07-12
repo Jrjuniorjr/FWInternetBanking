@@ -3,22 +3,25 @@ package fwIB;
 
 
 public class Conta {
-	private float saldo;
+	private double saldo;
 	private String numero;
 	
 	public Conta(String numero) {
 		this.numero = numero;
 		this.saldo =0.0f;
 	}
+	public Conta(String numero, double saldo) {
+		
+	}
 	
-	public void creditar(float n) {
+	public void creditar(double n) {
 		this.saldo=this.saldo+n;
 	}
-	public void debitar(float n) {
+	public void debitar(double n) {
 		this.saldo=this.saldo-n;
 	}
 	
-	public float consultarSaldo() {
+	public double consultarSaldo() {
 		return this.saldo;
 	}
 	
@@ -26,7 +29,7 @@ public class Conta {
 		return this.numero;
 	}
 	
-	public void transferir(Conta destino, float quantia) {
+	public void transferir(Conta destino, double quantia) {
 		this.debitar(quantia);
 		destino.creditar(quantia);
 	}
