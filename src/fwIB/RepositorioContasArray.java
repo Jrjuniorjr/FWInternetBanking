@@ -28,7 +28,7 @@ public class RepositorioContasArray {
 	}
        
    }
-   public int procurarIndice(Conta conta) {
+   private int procurarIndice(Conta conta) {
        for (int i = 0; i < tamCacheContas; i++) {
            if (contas[i] == null) {
                System.out.println("Não encontrou a conta");
@@ -74,7 +74,7 @@ public class RepositorioContasArray {
    
    public Conta procurarConta(String numeroConta) {
    	for(int i=0;i<tamCacheContas;i++) {
-   		if(numeroConta.equals(contas[i].numero)) {
+   		if(numeroConta.equals(contas[i].getNumero())) {
    			return contas.[i];
    		}
    	}
