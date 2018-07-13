@@ -1,4 +1,5 @@
 
+
 public class EnderecoCliente {
 	private String estado;
 	private String rua;
