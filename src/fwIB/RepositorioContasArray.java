@@ -15,7 +15,9 @@ public class RepositorioContasArray {
        	 this.contas[indice] = conta;
             indice++;
        }
+       else {
        System.out.println("Vetor cheio");
+       }
    }
    public void atualizarConta(Conta conta){
 	if(existeConta(conta.getNumero())) {
