@@ -18,7 +18,7 @@ public class Teste {
 		numeros[0] = "1213-7";
 		numeros[1] = "4441-8";
 		numeros[2] = "2141-9";
-		numeros[3] = "12132-7";		
+		numeros[3] = "12132-7";
 		numeros[4] = "44412-8";
 		numeros[5] ="21412-9";
 		contas.inserirConta(a);
