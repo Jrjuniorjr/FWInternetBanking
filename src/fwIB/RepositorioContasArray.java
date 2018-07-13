@@ -27,7 +27,7 @@ public class RepositorioContasArray {
 	}
 	}
 	else {
-		System.out.println("Conta não existe.");
+		System.out.println("Conta nï¿½o existe.");
 	}
        
    }
@@ -50,7 +50,7 @@ public class RepositorioContasArray {
 		   indice = indice - 1;
 	   }
 	   else {
-		   System.out.println("Conta não existe.");
+		   System.out.println("Conta nï¿½o existe.");
 	   }
 
    }
@@ -71,5 +71,7 @@ public class RepositorioContasArray {
    	}
    	return null; 
    }
+   
+   
 }
    
