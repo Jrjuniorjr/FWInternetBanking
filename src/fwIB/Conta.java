@@ -8,10 +8,11 @@ public class Conta {
 	
 	public Conta(String numero) {
 		this.numero = numero;
-		this.saldo =0.0f;
+		this.saldo =0.0;
 	}
 	public Conta(String numero, double saldo) {
-		
+		this.numero = numero;
+		this.saldo = saldo;
 	}
 	
 	public void creditar(double n) {

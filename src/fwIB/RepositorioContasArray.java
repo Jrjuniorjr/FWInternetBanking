@@ -1,71 +1,60 @@
 package fwIB;
 
-/**
-*
-* @author Jrjuniorjr
-*/
 public class RepositorioContasArray {
    private int tamCacheContas;
    private Conta contas[];
    private int indice;
    
    public RepositorioContasArray(){
-       contas = new Conta[100];
        tamCacheContas = 100;
+       contas = new Conta[tamCacheContas];
        indice = 0;
    }
-   public void inserir(Conta conta){
+   public void inserirConta(Conta conta){
        if(indice < tamCacheContas){
        	 this.contas[indice] = conta;
             indice++;
        }
        System.out.println("Vetor cheio");
    }
-   public void atualizar(Conta conta){
-	int indice = procurarIndice(conta);
+   public void atualizarConta(Conta conta){
+	if(existeConta(conta.getNumero())) {
+	int indice = procurarIndice(conta.getNumero());
 	if(indice != -1){
 		contas[indice] = conta;
 	}
+	}
+	else {
+		System.out.println("Conta não existe.");
+	}
        
    }
-   private int procurarIndice(Conta conta) {
+   private int procurarIndice(String numeroConta) {
        for (int i = 0; i < tamCacheContas; i++) {
            if (contas[i] == null) {
-               System.out.println("Não encontrou a conta");
                break;
-           } else if (contas[i].getNumero().equals(conta.getNumero())) {
+           } else if (contas[i].getNumero().equals(numeroConta)) {
                return i;
            }
        }
        return -1;
    }
 
-   public void remover(Conta conta) {
-       boolean removeu = false;
-       for (int i = 0; i < indice; i++) {
+   public void removerConta(String numeroConta) {
+	   if(existeConta(numeroConta)) {
+		   int i = procurarIndice(numeroConta);
+		   contas[i] = contas[indice-1];
+		   contas[indice-1] = null;
+		   indice = indice - 1;
+	   }
+	   else {
+		   System.out.println("Conta não existe.");
+	   }
 
-           if (removeu == false) {
-               if (contas[i] == null) {
-                   System.out.println("Não encontrou a conta");
-                   break;
-               } else if (contas[i].getNumero().equals(conta.getNumero())) {
-                   removeu = true;
-                   if(i == tamCacheContas - 1){
-                       contas[i]= null;
-                   }
-                   else{
-                       contas[i] = contas[i+1];
-                   }
-               }
-           }
-           else{
-               contas[i] = contas[i+1];
-           }
-       }
    }
-   public boolean exiteConta(String numeroConta) {
+   public boolean existeConta(String numeroConta) {
    	for(int i=0;i<tamCacheContas;i++) {
-   		if(numeroConta.equals(contas.numero)) {
+   		if(numeroConta.equals(contas[i].getNumero())) {
    			return true;
    		}
    	}
@@ -75,7 +64,7 @@ public class RepositorioContasArray {
    public Conta procurarConta(String numeroConta) {
    	for(int i=0;i<tamCacheContas;i++) {
    		if(numeroConta.equals(contas[i].getNumero())) {
-   			return contas.[i];
+   			return contas[i];
    		}
    	}
    	return null; 
