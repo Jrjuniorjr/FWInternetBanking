@@ -24,23 +24,17 @@ public class RepositorioClienteArray {
 		}
 	}
 	
-	public void remover(Cliente cliente) {
-		boolean removeu=false;
-		for(int i=0;i<this.indice;i++) {
-			if(removeu==false) {
-				if(this.clientes[i].getCpf().equals(cliente.getCpf())) {
-					removeu=true;
-					if(i==this.TAM_CACHE_CLIENTES-1) {
-						this.clientes[i]=null;
-					}else {
-						this.clientes[i]=this.clientes[i+1];
-					}
-				}
-			}else {
-				this.clientes[i]=this.clientes[i+1];
-			}
+	public void remover(String cpfCliente) {
+		if(existe(cpfCliente)) {
+			int i= this.procurarIndice(cpfCliente);
+			this.clientes[i]=this.clientes[this.indice-1];
+			this.clientes[indice-1]=null;
+			this.indice = this.indice-1;
+		}else {
+			System.out.println("Cliente nao encontrado!");
 		}
 	}
+	
 	
 	private int procurarIndice(String cpfCliente) {
 		for(int i=0;i<indice;i++) {
