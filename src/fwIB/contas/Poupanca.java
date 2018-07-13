@@ -1,9 +1,5 @@
+package contas;
 
-
-/**
-*
-* @author Jrjuniorjr
-*/
 public class Poupanca extends Conta{
    public Poupanca(String numero, double saldo){
        super(numero, saldo);

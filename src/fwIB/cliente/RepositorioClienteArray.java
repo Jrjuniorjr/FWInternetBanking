@@ -1,5 +1,4 @@
-
-
+package cliente;
 
 
 public class RepositorioClienteArray {
@@ -31,7 +30,7 @@ public class RepositorioClienteArray {
 			this.clientes[indice-1]=null;
 			this.indice = this.indice-1;
 		}else {
-			System.out.println("Cliente nao encontrado!");
+			System.out.println("cliente.Cliente nao encontrado!");
 		}
 	}
 	

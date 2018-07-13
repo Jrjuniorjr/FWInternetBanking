@@ -1,5 +1,4 @@
-package fwIB;
-
+package cliente;
 
 public class EnderecoCliente {
 	private String estado;
