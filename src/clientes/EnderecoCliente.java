@@ -1,4 +1,4 @@
-package cliente;
+package clientes;
 
 public class EnderecoCliente {
 	private String estado;

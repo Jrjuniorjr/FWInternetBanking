@@ -1,6 +1,4 @@
-import contas.Conta;
-import contas.Poupanca;
-import contas.RepositorioContasArray;
+import contas.*;
 
 public class Teste {
 
