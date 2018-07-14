@@ -1,9 +1,9 @@
 package clientes;
 
 
-public class RepositorioClienteArray {
-	public int TAM_CACHE_CLIENTES = 100;
-	private Cliente clientes[];
+public class RepositorioClienteArray implements IRepCliente {
+	private final static int TAM_CACHE_CLIENTES = 100;
+	private Cliente[] clientes;
 	private int indice;
 	
 	public RepositorioClienteArray() {
@@ -20,7 +20,9 @@ public class RepositorioClienteArray {
 		int index= procurarIndice(cliente.getCpf());
 		if(index != -1) {
 				this.clientes[index]=cliente;
-		}
+		}else{
+                    System.out.println("Cliente nao encontrado!"); 
+                }
 	}
 	
 	public void remover(String cpfCliente) {
@@ -30,7 +32,7 @@ public class RepositorioClienteArray {
 			this.clientes[indice-1]=null;
 			this.indice = this.indice-1;
 		}else {
-			System.out.println("cliente.Cliente nao encontrado!");
+			System.out.println("Cliente nao encontrado!");
 		}
 	}
 	
@@ -45,17 +47,24 @@ public class RepositorioClienteArray {
 		}
 		return -1;
 	}
+        
 	public boolean existe(String cpfCliente) {
 		if(procurarIndice(cpfCliente)!=-1) {
 			return true;
 		}
 		return false;
 	}
-	public Cliente procurar(String numcpf) {
-		int i=procurarIndice(numcpf);
+        
+	public Cliente procurar(String cpfCliente) {
+            Cliente c= null;
+            if(existe(cpfCliente)){
+		int i=procurarIndice(cpfCliente);
 		if(i!=-1) {
-			return this.clientes[i];
-		}
-		return null;
+			c=this.clientes[i];
+		}else{
+                    System.out.println("Cliente não encontrado!");
+                }
+            }
+		return c;
 	}
 }

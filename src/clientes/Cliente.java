@@ -15,10 +15,11 @@ public class Cliente {
 	private EnderecoCliente endereco;
 	
 	
-	public Cliente(String cpf,String nome,tipoCliente tipo) {
+	public Cliente(String cpf,String nome,tipoCliente tipo,EnderecoCliente endereco) {
 		this.cpf=cpf;
 		this.nome=nome;
 		this.tipo = tipo;
+                this.endereco = endereco;
 	}
 	
 	public String getCpf() {
