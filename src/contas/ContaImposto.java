@@ -1,14 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package contas;
 
-/**
- *
- * @author Junior
- */
-public class ContaImposto {
+import clientes.Cliente;
+
+
+public class ContaImposto extends ContaAbstrata{
+    public static final double TAXA = 0.01;
+    
+    public ContaImposto(String numero, double saldo, Cliente cliente) {
+        super(numero, saldo, cliente);
+    }
+
+    public ContaImposto(String numero, Cliente cliente) {
+        super(numero, cliente);
+    }
+    
+    @Override
+    public void debitar(double quantia) {
+        double imposto;
+        imposto = quantia * TAXA;
+        this.setSaldo(consultarSaldo() - (quantia + imposto));
+    }
     
 }
