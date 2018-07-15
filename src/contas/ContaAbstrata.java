@@ -26,7 +26,7 @@ public abstract class ContaAbstrata {
     public double consultarSaldo() {
         return saldo;
     }
-    public void setSaldo(double saldo){
+    protected void setSaldo(double saldo){
         this.saldo = saldo;
     }
 
