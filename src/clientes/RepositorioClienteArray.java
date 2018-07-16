@@ -19,21 +19,16 @@ public class RepositorioClienteArray implements IRepCliente {
 	public void atualizar(Cliente cliente) {
 		int index= procurarIndice(cliente.getCpf());
 		if(index != -1) {
-				this.clientes[index]=cliente;
-		}else{
-                    System.out.println("Cliente nao encontrado!"); 
-                }
+                    this.clientes[index]=cliente;
+		}
 	}
 	
 	public void remover(String cpfCliente) {
-		if(existe(cpfCliente)) {
-			int i= this.procurarIndice(cpfCliente);
-			this.clientes[i]=this.clientes[this.indice-1];
-			this.clientes[indice-1]=null;
-			this.indice = this.indice-1;
-		}else {
-			System.out.println("Cliente nao encontrado!");
-		}
+            int i= this.procurarIndice(cpfCliente);
+            this.clientes[i]=this.clientes[this.indice-1];
+            this.clientes[indice-1]=null;
+            this.indice = this.indice-1;
+
 	}
 	
 	
@@ -56,15 +51,10 @@ public class RepositorioClienteArray implements IRepCliente {
 	}
         
 	public Cliente procurar(String cpfCliente) {
-            Cliente c= null;
-            if(existe(cpfCliente)){
 		int i=procurarIndice(cpfCliente);
 		if(i!=-1) {
-			c=this.clientes[i];
-		}else{
-                    System.out.println("Cliente não encontrado!");
-                }
-            }
-		return c;
+			return this.clientes[i];
+		}
+		return null;
 	}
 }
