@@ -1,4 +1,7 @@
-package clientes;
+package br.com.fwintbank.dados;
+
+import br.com.fwintbank.model.Cliente;
+import br.com.fwintbank.model.IRepCliente;
 
 
 public class RepositorioClienteArray implements IRepCliente {
@@ -11,7 +14,7 @@ public class RepositorioClienteArray implements IRepCliente {
 		this.indice=0;
 	}
 	public void inserir(Cliente cliente) {
-		if(indice<this.TAM_CACHE_CLIENTES) {
+		if(indice<RepositorioClienteArray.TAM_CACHE_CLIENTES) {
 		 this.clientes[indice]=cliente;
 		 this.indice++;
 		}

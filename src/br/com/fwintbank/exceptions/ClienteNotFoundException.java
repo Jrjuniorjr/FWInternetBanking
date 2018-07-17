@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package clientes;
+package br.com.fwintbank.exceptions;
 
 /**
  *
  * @author lucas
  */
-public enum TipoCliente {
-    		VIP,
-		CLASS,
-		STANDARD,
+public class ClienteNotFoundException extends Exception{
+    public ClienteNotFoundException(){
+        super("Cliente não encontrado!");
+    }
 }
