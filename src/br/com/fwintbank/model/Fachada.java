@@ -7,6 +7,7 @@ package br.com.fwintbank.model;
 
 import br.com.fwintbank.dados.RepositorioClienteArray;
 import br.com.fwintbank.dados.RepositorioContasArray;
+import br.com.fwintbank.exceptions.*;
 
 /**
  *
@@ -58,17 +59,34 @@ public class Fachada {
     
     
      public void inserirCliente(Cliente cliente){
-        cadastroCliente.inserir(cliente);
+        try{
+            cadastroCliente.inserir(cliente);
+        }catch(ClienteExistenteException cee){
+            System.out.println(cee.getMessage());
+        }
     }
     public void removerliente(String cpf){
-        cadastroCliente.remover(cpf);
+        try{
+           cadastroCliente.remover(cpf);
+        }catch(ClienteNotFoundException cnfe){
+            System.out.println(cnfe.getMessage());
+        }
     }
     public Cliente consultarCliente(String cpf){
-        return cadastroCliente.consultar(cpf);
+        try{
+            return cadastroCliente.consultar(cpf);
+        }catch(ClienteNotFoundException cnfe){
+            System.out.println(cnfe.getMessage());
+            return null; // revisar aqui depois
+        }
     }
     
     public void atualizarCliente(Cliente cliente){
-        cadastroCliente.atualizar(cliente);
+        try{
+            cadastroCliente.atualizar(cliente);
+        }catch(ClienteNotFoundException cnfe){
+            System.out.println(cnfe.getMessage());
+        }
     }
     
 }
