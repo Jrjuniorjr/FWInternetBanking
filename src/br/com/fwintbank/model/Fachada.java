@@ -29,6 +29,8 @@ public class Fachada {
         return instancia;
     }
     
+    
+    //OPERAÇÕES DE CONTA
     public void inserirConta(ContaAbstrata conta){
         cadastroContas.inserirConta(conta);
     }
@@ -36,8 +38,37 @@ public class Fachada {
         cadastroContas.removerConta(numero);
     }
     public ContaAbstrata consultarConta(String numero){
-        cadastroContas.consultarConta(numero);
-        cadastroContas.
+        return cadastroContas.consultarConta(numero);
     }
-    public void atualizarConta()
+    public void atualizarConta(ContaAbstrata conta){
+        cadastroContas.atualizarConta(conta);
+   }
+    public void debitar(ContaAbstrata c, double valor){
+       cadastroContas.debitar(c, valor);
+   }
+   public void transferir(ContaAbstrata cOrigem, ContaAbstrata cDestino, double valor){
+       cadastroContas.transferir(cOrigem, cDestino, valor);
+   }
+   public void creditar(ContaAbstrata c, double valor){
+       cadastroContas.creditar(c, valor);
+   }
+    
+    //OPERAÇÕES DE CLIENTE
+    
+    
+    
+     public void inserirCliente(Cliente cliente){
+        cadastroCliente.inserir(cliente);
+    }
+    public void removerliente(String cpf){
+        cadastroCliente.remover(cpf);
+    }
+    public Cliente consultarCliente(String cpf){
+        return cadastroCliente.consultar(cpf);
+    }
+    
+    public void atualizarCliente(Cliente cliente){
+        cadastroCliente.atualizar(cliente);
+    }
+    
 }
