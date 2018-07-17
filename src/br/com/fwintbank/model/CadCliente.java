@@ -1,5 +1,7 @@
 package br.com.fwintbank.model;
 
+import br.com.fwintbank.exceptions.*;
+
 
 public class CadCliente {
    private IRepCliente irep;
@@ -10,36 +12,39 @@ public class CadCliente {
    }
    
    
-   public void inserir(Cliente c){
+   public void inserir(Cliente c) throws ClienteExistenteException{
        //inserir um validar CPF
        if(!this.irep.existe(c.getCpf())){
            this.irep.inserir(c);
        }else{
-           System.out.println("CPF já cadastrado!");
+           ClienteExistenteException cee = new ClienteExistenteException();
+           throw cee;
        }
    }
    
-   public void remover(String cpf){
+   public void remover(String cpf) throws ClienteNotFoundException{
        if(this.irep.existe(cpf)){
            this.irep.remover(cpf);
        }else{
-           System.out.println("Cliente não encontrado!");
+           ClienteNotFoundException cnfe = new ClienteNotFoundException();
+           throw cnfe;
        }
    }
    
-   public void atualizar(Cliente c){
+   public void atualizar(Cliente c) throws ClienteNotFoundException{
        if(this.irep.existe(c.getCpf())){
            this.irep.atualizar(c);
        }else{
-           System.out.println("Cliente não encontrado!");
+           ClienteNotFoundException cnfe = new ClienteNotFoundException();
+           throw cnfe;
        }
    }
-   public Cliente consultar(String cpf){
+   public Cliente consultar(String cpf) throws ClienteNotFoundException{
        if(this.irep.existe(cpf)){
            return this.irep.procurar(cpf);
        }else{
-           System.out.println("Cliente não encontrado!");
-           return null;
+           ClienteNotFoundException cnfe = new ClienteNotFoundException();
+           throw cnfe;
        }
    }
     
