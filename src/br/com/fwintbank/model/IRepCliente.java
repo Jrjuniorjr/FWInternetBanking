@@ -1,5 +1,5 @@
 
-package clientes;
+package br.com.fwintbank.model;
 
 public interface IRepCliente {
     public abstract void inserir(Cliente cliente);

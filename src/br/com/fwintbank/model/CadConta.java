@@ -1,6 +1,6 @@
-package contas;
+package br.com.fwintbank.model;
 
-import clientes.Cliente;
+import br.com.fwintbank.model.Cliente;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

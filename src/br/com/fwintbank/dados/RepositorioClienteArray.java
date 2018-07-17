@@ -1,4 +1,7 @@
-package clientes;
+package br.com.fwintbank.dados;
+
+import br.com.fwintbank.model.Cliente;
+import br.com.fwintbank.model.IRepCliente;
 
 
 public class RepositorioClienteArray implements IRepCliente {

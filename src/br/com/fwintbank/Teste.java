@@ -1,8 +1,12 @@
-import clientes.CadCliente;
-import clientes.EnderecoCliente;
-import clientes.RepositorioClienteArray;
-import clientes.TipoCliente;
-import contas.*;
+
+package br.com.fwintbank;
+
+import br.com.fwintbank.dados.RepositorioClienteArray;
+import br.com.fwintbank.dados.RepositorioContasArray;
+import br.com.fwintbank.model.CadCliente;
+import br.com.fwintbank.model.CadConta;
+import br.com.fwintbank.model.Conta;
+import br.com.fwintbank.model.ContaAbstrata;
 
 public class Teste {
         private CadCliente  cadCli;
