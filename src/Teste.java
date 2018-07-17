@@ -1,4 +1,5 @@
 import contas.*;
+import clientes.*;
 
 public class Teste {
 
@@ -26,6 +27,7 @@ public class Teste {
 		contas.inserirConta(e);
 		contas.inserirConta(f);
 		rendeJuros(numeros,contas);
+                
 
 	}
 	
