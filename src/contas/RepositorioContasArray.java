@@ -57,9 +57,11 @@ public class RepositorioContasArray implements IRepContas {
    }
    public boolean existe(String numeroConta) {
    	for(int i=0;i<tamCacheContas;i++) {
+            if(this.contas[i]!=null) {
    		if(numeroConta.equals(contas[i].getNumero())) {
    			return true;
    		}
+            }
    	}
    	return false;  	
    }
