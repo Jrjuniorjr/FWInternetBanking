@@ -1,4 +1,7 @@
-import contas.*;
+package br.com.fwintbank;
+
+import br.com.fwintbank.dados.RepositorioContasArray;
+import br.com.fwintbank.model.Conta;
 
 public class Teste {
 

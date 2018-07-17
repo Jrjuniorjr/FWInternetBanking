@@ -1,6 +1,6 @@
-package contas;
+package br.com.fwintbank.model;
 
-import clientes.Cliente;
+import br.com.fwintbank.model.Cliente;
 
 public class ContaBonificada extends Conta{
     private double bonus;

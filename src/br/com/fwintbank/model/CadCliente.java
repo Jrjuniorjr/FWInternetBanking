@@ -1,4 +1,4 @@
-package clientes;
+package br.com.fwintbank.model;
 
 
 public class CadCliente {
