@@ -9,14 +9,11 @@ public class CadCliente {
        this.irep= i;
    }
    
-   private Cliente criarCliente(String cpf,String nome,TipoCliente tipo,EnderecoCliente endereco){
-       return new Cliente(cpf,nome,tipo,endereco);
-   }
    
-   public void inserir(String cpf,String nome,TipoCliente tipo,EnderecoCliente endereco){
+   public void inserir(Cliente c){
        //inserir um validar CPF
-       if(!this.irep.existe(cpf)){
-           this.irep.inserir(criarCliente(cpf, nome, tipo, endereco));
+       if(!this.irep.existe(c.getCpf())){
+           this.irep.inserir(c);
        }else{
            System.out.println("CPF já cadastrado!");
        }
@@ -30,9 +27,9 @@ public class CadCliente {
        }
    }
    
-   public void atualizar(String cpf,String nome,TipoCliente tipo,EnderecoCliente endereco){
-       if(this.irep.existe(cpf)){
-           this.irep.atualizar(criarCliente(cpf, nome, tipo, endereco));
+   public void atualizar(Cliente c){
+       if(this.irep.existe(c.getCpf())){
+           this.irep.atualizar(c);
        }else{
            System.out.println("Cliente não encontrado!");
        }

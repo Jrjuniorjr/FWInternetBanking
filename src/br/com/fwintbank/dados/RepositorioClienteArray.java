@@ -14,7 +14,7 @@ public class RepositorioClienteArray implements IRepCliente {
 		this.indice=0;
 	}
 	public void inserir(Cliente cliente) {
-		if(indice<this.TAM_CACHE_CLIENTES) {
+		if(indice<RepositorioClienteArray.TAM_CACHE_CLIENTES) {
 		 this.clientes[indice]=cliente;
 		 this.indice++;
 		}
