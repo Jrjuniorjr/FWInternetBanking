@@ -21,9 +21,10 @@ public class CadConta {
        this.irep= i;
    }
    
-   public void inserirConta(String numero, double saldo, Cliente cliente, ContasEnum tipo){
-       if(!this.irep.existe(numero)){
-           irep.inserir(defineConta(numero,saldo,cliente,tipo));       
+   //------------------------------------- C  R  U  D -----------------------------------------------
+   public void inserirConta(ContaAbstrata c){
+       if(!this.irep.existe(c.getNumero())){
+           irep.inserir(c);       
        }else{
            System.out.println("conta já cadastrada");
        }
@@ -37,9 +38,9 @@ public class CadConta {
        }
    }
    
-   public void atualizarConta(String numero, double saldo, Cliente cliente, ContasEnum tipo){
-       if(this.irep.existe(numero)){
-           this.irep.atualizar(defineConta(numero,saldo,cliente,tipo));
+   public void atualizarConta(ContaAbstrata c){
+       if(this.irep.existe(c.getNumero())){
+           this.irep.atualizar(c);
        }else{
            System.out.println("conta não encontrada!");
        }
@@ -54,19 +55,18 @@ public class CadConta {
        return c;
    }
    
-   private ContaAbstrata defineConta(String numero, double saldo, Cliente cliente, ContasEnum tipo){
-       
-       if(tipo == ContasEnum.BONIFICADA){
-           return new ContaBonificada(numero, saldo, cliente);
-       }
-       if(tipo == ContasEnum.IMPOSTO){
-           return new ContaImposto(numero, saldo, cliente);
-       }
-       if(tipo == ContasEnum.POLPANCA){
-           return new ContaPoupanca(numero, saldo, cliente);
-       }
-       return null;
+   //----------------------------------  R  N  --------------------------------------------
+   
+   public void debitar(ContaAbstrata c, double valor){
+       c.debitar(valor);
    }
+   public void transferir(ContaAbstrata cOrigem, ContaAbstrata cDestino, double valor){
+       cOrigem.transferir(cDestino, valor);
+   }
+   public void creditar(ContaAbstrata c, double valor){
+       c.creditar(valor);
+   }
+   
     
 }
 
