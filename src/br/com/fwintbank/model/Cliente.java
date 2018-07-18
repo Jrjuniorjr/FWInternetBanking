@@ -1,7 +1,7 @@
 package br.com.fwintbank.model;
 
 
-public class Cliente {
+public class Cliente implements Comparable<Cliente> {
 
 	
 	private String cpf;
@@ -36,7 +36,12 @@ public class Cliente {
 	public EnderecoCliente getEndereco() {
 		return this.endereco;
 	}
-	
-	
 
+    
+    public int compareTo(Cliente t) {
+       return this.getCpf().compareTo(t.getCpf());
+    }
+	
+           
+     
 }

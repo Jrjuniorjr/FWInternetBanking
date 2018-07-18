@@ -5,8 +5,7 @@
  */
 package br.com.fwintbank.model;
 
-import br.com.fwintbank.dados.RepositorioClienteArray;
-import br.com.fwintbank.dados.RepositorioContasArray;
+import br.com.fwintbank.dados.*;
 import br.com.fwintbank.exceptions.*;
 
 /**
@@ -19,7 +18,7 @@ public class Fachada {
     private CadConta cadastroContas;
     
     private Fachada(){
-        cadastroCliente = new CadCliente(new RepositorioClienteArray());
+        cadastroCliente = new CadCliente(new RepositorioClienteTreeSet());
         cadastroContas = new CadConta(new RepositorioContasArray());
     }
     
