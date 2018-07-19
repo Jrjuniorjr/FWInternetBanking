@@ -2,6 +2,7 @@ package br.com.fwintbank.dados;
 
 import br.com.fwintbank.model.Cliente;
 import br.com.fwintbank.model.IRepCliente;
+import br.com.fwintbank.exceptions.*;
 
 
 public class RepositorioClienteArray implements IRepCliente {
@@ -13,25 +14,32 @@ public class RepositorioClienteArray implements IRepCliente {
 		this.clientes = new Cliente[TAM_CACHE_CLIENTES];
 		this.indice=0;
 	}
-	public void inserir(Cliente cliente) {
+	public void inserir(Cliente cliente) throws RepositorioCheioException{
 		if(indice<RepositorioClienteArray.TAM_CACHE_CLIENTES) {
 		 this.clientes[indice]=cliente;
 		 this.indice++;
-		}
+		}else{
+                    throw new RepositorioCheioException();
+                }
 	}
-	public void atualizar(Cliente cliente) {
+	public void atualizar(Cliente cliente) throws ClienteNotFoundException{
 		int index= procurarIndice(cliente.getCpf());
 		if(index != -1) {
                     this.clientes[index]=cliente;
-		}
+		}else{
+                    throw new ClienteNotFoundException();
+                }
 	}
 	
-	public void remover(String cpfCliente) {
+	public void remover(String cpfCliente) throws ClienteNotFoundException{
             int i= this.procurarIndice(cpfCliente);
-            this.clientes[i]=this.clientes[this.indice-1];
-            this.clientes[indice-1]=null;
-            this.indice = this.indice-1;
-
+            if(i!=-1){
+                this.clientes[i]=this.clientes[this.indice-1];
+                this.clientes[indice-1]=null;
+                this.indice = this.indice-1;
+            }else{
+                throw new ClienteNotFoundException();
+            }
 	}
 	
 	
@@ -44,20 +52,14 @@ public class RepositorioClienteArray implements IRepCliente {
 			}
 		}
 		return -1;
-	}
+	}        
         
-	public boolean existe(String cpfCliente) {
-		if(procurarIndice(cpfCliente)!=-1) {
-			return true;
-		}
-		return false;
-	}
-        
-	public Cliente procurar(String cpfCliente) {
+	public Cliente procurar(String cpfCliente) throws ClienteNotFoundException {
 		int i=procurarIndice(cpfCliente);
 		if(i!=-1) {
-			return this.clientes[i];
-		}
-		return null;
+                    return this.clientes[i];
+		}else{
+                    throw new ClienteNotFoundException();   
+                }
 	}
 }
