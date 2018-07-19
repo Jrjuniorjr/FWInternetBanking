@@ -38,11 +38,11 @@ public abstract class ContaAbstrata {
         return cliente;
     }
    
-    public void transferir(ContaAbstrata destino, double quantia) {
+    public void transferir(ContaAbstrata destino, double quantia) throws Exception {
         this.debitar(quantia);
         destino.creditar(quantia);
     }
-    public abstract void debitar(double quantia);
+    public abstract void debitar(double quantia) throws Exception;
     
    
     
