@@ -17,9 +17,7 @@ public interface IRepGen<E> {
     public abstract void atualizar(E e);
 
     public abstract void remover(String key);
-
-    public abstract boolean existe(String key);
-
+    
     public abstract ContaAbstrata procurar(String key);
 
 }
