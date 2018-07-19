@@ -40,12 +40,14 @@ public class RepositorioClienteTreeSet implements IRepCliente {
        }       
     }
 
-    public void remover(Cliente cliente) throws ClienteNotFoundException{
-        if(this.treeSet.contains(cliente)){
-            this.treeSet.remove(cliente);
-        }else{
-            throw new ClienteNotFoundException();
-        }
+    public void remover(String cpfCliente) throws ClienteNotFoundException{
+        for(Cliente c: this.treeSet){
+            if(c.getCpf().equals(cpfCliente)){
+                this.treeSet.remove(c);
+                return;
+            }
+        } 
+        throw new ClienteNotFoundException();
     }
 
     public Cliente procurar(String cpfCliente) throws ClienteNotFoundException{
