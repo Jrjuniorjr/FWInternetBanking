@@ -14,10 +14,10 @@ public interface IRepGen<E> {
     
     public abstract void inserir(E e);
 
-    public abstract void atualizar(E e);
+    public abstract void atualizar(E e) throws Exception;
 
-    public abstract void remover(E key);
+    public abstract void remover(E key) throws Exception;
 
-    public abstract E procurar(String key);
+    public abstract E procurar(String key) throws Exception;
 
 }

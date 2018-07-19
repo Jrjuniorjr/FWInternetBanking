@@ -1,17 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package br.com.fwintbank.model;
 
 import br.com.fwintbank.dados.*;
 import br.com.fwintbank.exceptions.*;
 
-/**
- *
- * @author Maria Eduarda
- */
+
 public class Fachada {
 
     private static Fachada instancia;
@@ -98,36 +91,19 @@ public class Fachada {
 
     //OPERAÇÕES DE CLIENTE
     public void inserirCliente(Cliente cliente) {
-        try {
-            cadastroCliente.inserir(cliente);
-        } catch (ClienteExistenteException cee) {
-            System.out.println(cee.getMessage());
-        }
+        cadastroCliente.inserir(cliente);
     }
 
-    public void removerliente(String cpf) {
-        try {
-            cadastroCliente.remover(cpf);
-        } catch (ClienteNotFoundException cnfe) {
-            System.out.println(cnfe.getMessage());
-        }
+    public void removerliente(Cliente c) throws Exception {
+        cadastroCliente.remover(c);      
     }
 
-    public Cliente consultarCliente(String cpf) {
-        try {
-            return cadastroCliente.consultar(cpf);
-        } catch (ClienteNotFoundException cnfe) {
-            System.out.println(cnfe.getMessage());
-            return null; // revisar aqui depois
-        }
+    public Cliente consultarCliente(String cpf) throws Exception {
+        return cadastroCliente.consultar(cpf);  
     }
 
-    public void atualizarCliente(Cliente cliente) {
-        try {
-            cadastroCliente.atualizar(cliente);
-        } catch (ClienteNotFoundException cnfe) {
-            System.out.println(cnfe.getMessage());
-        }
+    public void atualizarCliente(Cliente cliente) throws Exception{
+        cadastroCliente.atualizar(cliente);
     }
 
 }
