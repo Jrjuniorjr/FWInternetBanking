@@ -16,14 +16,14 @@ import java.util.Map;
  */
 public class RepositorioContasHashMap implements IRepContas {
 
-    private Map mapa;
+    private Map<String,ContaAbstrata> mapa;
 
     public RepositorioContasHashMap() {
         mapa = new HashMap<String, ContaAbstrata>();
     }
 
     @Override
-    public void inserir(ContaAbstrata conta) throws Exception {
+    public void inserir(ContaAbstrata conta) throws ContaExistenteException {
         if (!mapa.containsKey(conta.getNumero())) {
             mapa.put(conta.getNumero(), conta);
         } else {
@@ -33,7 +33,7 @@ public class RepositorioContasHashMap implements IRepContas {
     }
 
     @Override
-    public void atualizar(ContaAbstrata conta) throws Exception {
+    public void atualizar(ContaAbstrata conta) throws ContaNotFoundException {
         if (mapa.containsKey(conta.getNumero())) {
             mapa.remove(conta.getNumero());
             mapa.put(conta.getNumero(), conta);
@@ -44,7 +44,7 @@ public class RepositorioContasHashMap implements IRepContas {
     }
 
     @Override
-    public void remover(String numConta) throws Exception{
+    public void remover(String numConta) throws ContaNotFoundException{
         if (mapa.containsKey(numConta)) {
             mapa.remove(numConta);
         } else {
@@ -54,7 +54,7 @@ public class RepositorioContasHashMap implements IRepContas {
     }
 
     @Override
-    public ContaAbstrata procurar(String numConta) throws Exception{
+    public ContaAbstrata procurar(String numConta) throws ContaNotFoundException{
         ContaAbstrata conta = null;
         conta = (ContaAbstrata) mapa.get(numConta);
         if(conta == null){
