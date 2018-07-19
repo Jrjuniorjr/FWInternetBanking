@@ -5,10 +5,13 @@
  */
 package br.com.fwintbank.dados;
 
+import br.com.fwintbank.exceptions.*;
 import br.com.fwintbank.model.Cliente;
 import br.com.fwintbank.model.IRepCliente;
+
 import java.util.Set;
 import java.util.TreeSet;
+
 
 /**
  *
@@ -18,48 +21,39 @@ public class RepositorioClienteTreeSet implements IRepCliente {
     private Set<Cliente> treeSet;
     
     public RepositorioClienteTreeSet(){
-        this.treeSet = new TreeSet<Cliente>();
+        this.treeSet = new TreeSet<>();
     }
 
 
-    public void inserir(Cliente cliente) {
+    public void inserir(Cliente cliente){
         this.treeSet.add(cliente);
     }
 
 
-    public void atualizar(Cliente cliente) {
-       this.treeSet.remove(cliente);
-       this.treeSet.add(cliente);
-    }
-
-
-    public void remover(String cpfCliente) {
-       for(Cliente c : this.treeSet){
-           if(c.getCpf().equals(cpfCliente)){
-               this.treeSet.remove(c);
-           }
-       }          
-    }
-
-
-    public boolean existe(String cpfCliente) {
-       for(Cliente c : this.treeSet){
-           if(c.getCpf().equals(cpfCliente)){
-               return true;
-           }
+    public void atualizar(Cliente cliente) throws ClienteNotFoundException{
+       try{ 
+         this.treeSet.remove(cliente);
+         this.treeSet.add(cliente);
+       }catch(Exception e){
+           throw new ClienteNotFoundException();
        }
-       return false;
     }
 
+    public void remover(Cliente cliente) throws ClienteNotFoundException{
+       try{ 
+         this.treeSet.remove(cliente);
+       }catch(Exception e){
+           throw new ClienteNotFoundException();
+       }
+    }
 
-    public Cliente procurar(String cpfCliente) {
-       Cliente cl=null;
+    public Cliente procurar(String cpfCliente) throws ClienteNotFoundException{
         for(Cliente c : this.treeSet){
            if(c.getCpf().equals(cpfCliente)){
-               cl=c;
+              return c;
            }
        }
-       return cl;
+       throw new ClienteNotFoundException();
     }
     
 }
