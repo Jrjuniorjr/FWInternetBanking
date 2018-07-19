@@ -9,7 +9,7 @@ package br.com.fwintbank.model;
  *
  * @author felix
  */
-public interface IRepContas extends IRepGen<Conta>{
+public interface IRepContas extends IRepGen<ContaAbstrata>{
 //Metodos esoecificos do repositorio de conta
 }  
 
