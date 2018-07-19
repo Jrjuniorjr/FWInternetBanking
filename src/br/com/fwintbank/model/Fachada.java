@@ -25,77 +25,41 @@ public class Fachada {
     }
 
     //OPERAÇÕES DE CONTA
-    public void inserirConta(ContaAbstrata conta) {
-        try {
-            cadastroContas.inserirConta(conta);
-        } catch (ContaExistenteException cee) {
-            System.out.println(cee.getMessage());
-        }
+    public void inserirConta(ContaAbstrata conta) throws Exception{
+        cadastroContas.inserir(conta); 
     }
 
-    public void removerConta(String numero) {
-        try {
-            cadastroContas.removerConta(numero);
-        } catch (ContaNotFoundException cnfe) {
-            System.out.println(cnfe.getMessage());
-        }
+    public void removerConta(String numero) throws Exception {
+        cadastroContas.remover(numero);
     }
 
-    public ContaAbstrata consultarConta(String numero) {
-        ContaAbstrata conta = null;
-        try {
-            conta = cadastroContas.consultarConta(numero);
-        } catch (ContaNotFoundException cnfe) {
-            System.out.println(cnfe.getMessage());
-        }
-        return conta;
+    public ContaAbstrata consultarConta(String numero)throws Exception {
+        return cadastroContas.consultar(numero);
     }
 
-    public void atualizarConta(ContaAbstrata conta) {
-        try {
-            cadastroContas.atualizarConta(conta);
-        } catch (ContaNotFoundException cnfe) {
-            System.out.println(cnfe.getMessage());
-        }
+    public void atualizarConta(ContaAbstrata conta) throws Exception {
+        cadastroContas.atualizar(conta);
     }
 
-    public void debitar(ContaAbstrata c, double valor) {
-        try {
-            cadastroContas.debitar(c, valor);
-        } catch (ContaNotFoundException cnfe) {
-            System.out.println(cnfe.getMessage());
-        } catch (SaldoInsuficienteException sie) {
-            System.out.println(sie.getMessage());
-        }
+    public void debitar(String numeroConta, double valor) throws Exception {
+        cadastroContas.debitar(numeroConta, valor);
     }
 
-    public void transferir(ContaAbstrata cOrigem, ContaAbstrata cDestino, double valor) {
-        try {
-            cadastroContas.transferir(cOrigem, cDestino, valor);
-        } catch (ContaNotFoundException cnfe) {
-            System.out.println(cnfe.getMessage());
-        } catch (SaldoInsuficienteException sie) {
-            System.out.println(sie.getMessage());
-        }
+    public void transferir(String NumeroContaOrigem, String  NumeroContaDestino, double valor) throws Exception {
+        cadastroContas.transferir(NumeroContaOrigem, NumeroContaDestino, valor);
     }
 
-    public void creditar(ContaAbstrata c, double valor) {
-        try {
-            cadastroContas.creditar(c, valor);
-        } catch (ContaNotFoundException cnfe) {
-            System.out.println(cnfe.getMessage());
-        } catch (SaldoInsuficienteException sie) {
-            System.out.println(sie.getMessage());
-        }
+    public void creditar(String numeroConta, double valor) throws Exception{
+        cadastroContas.creditar(numeroConta, valor);
     }
 
     //OPERAÇÕES DE CLIENTE
-    public void inserirCliente(Cliente cliente) {
+    public void inserirCliente(Cliente cliente) throws Exception{
         cadastroCliente.inserir(cliente);
     }
 
-    public void removerliente(Cliente c) throws Exception {
-        cadastroCliente.remover(c);      
+    public void removerliente(String cpf) throws Exception {
+        cadastroCliente.remover(cpf);      
     }
 
     public Cliente consultarCliente(String cpf) throws Exception {
