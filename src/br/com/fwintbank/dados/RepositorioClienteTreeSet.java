@@ -31,20 +31,21 @@ public class RepositorioClienteTreeSet implements IRepCliente {
 
 
     public void atualizar(Cliente cliente) throws ClienteNotFoundException{
-       try{ 
-         this.treeSet.remove(cliente);
-         this.treeSet.add(cliente);
-       }catch(Exception e){
+       
+        if(this.treeSet.contains(cliente)){
+           this.treeSet.remove(cliente);
+           this.treeSet.add(cliente);
+       }else{
            throw new ClienteNotFoundException();
-       }
+       }       
     }
 
     public void remover(Cliente cliente) throws ClienteNotFoundException{
-       try{ 
-         this.treeSet.remove(cliente);
-       }catch(Exception e){
-           throw new ClienteNotFoundException();
-       }
+        if(this.treeSet.contains(cliente)){
+            this.treeSet.remove(cliente);
+        }else{
+            throw new ClienteNotFoundException();
+        }
     }
 
     public Cliente procurar(String cpfCliente) throws ClienteNotFoundException{
