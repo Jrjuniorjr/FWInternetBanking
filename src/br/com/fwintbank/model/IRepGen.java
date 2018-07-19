@@ -16,8 +16,8 @@ public interface IRepGen<E> {
 
     public abstract void atualizar(E e);
 
-    public abstract void remover(String key);
-    
-    public abstract ContaAbstrata procurar(String key);
+    public abstract void remover(E key);
+
+    public abstract E procurar(String key);
 
 }
