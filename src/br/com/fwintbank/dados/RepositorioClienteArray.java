@@ -14,10 +14,14 @@ public class RepositorioClienteArray implements IRepCliente {
 		this.clientes = new Cliente[TAM_CACHE_CLIENTES];
 		this.indice=0;
 	}
-	public void inserir(Cliente cliente) throws RepositorioCheioException{
+	public void inserir(Cliente cliente) throws RepositorioCheioException,ClienteExistenteException{
 		if(indice<RepositorioClienteArray.TAM_CACHE_CLIENTES) {
-		 this.clientes[indice]=cliente;
-		 this.indice++;
+                    if(procurarIndice(cliente.getCpf())==-1){
+                       this.clientes[indice]=cliente;
+                       this.indice++;
+                    }else{
+                       throw new ClienteExistenteException();
+                    }
 		}else{
                     throw new RepositorioCheioException();
                 }

@@ -17,30 +17,29 @@ public class RepositorioContasArray implements IRepContas {
     }
 
     @Override
-    public void inserir(ContaAbstrata conta) throws Exception {
-        if(existe(conta.getNumero())){
-        this.contas[indice] = conta;
-        indice++;
+    public void inserir(ContaAbstrata conta) throws RepositorioCheioException,ContaExistenteException {
+        if(procurarIndice(conta.getNumero())==-1){
+          if(indice<tamCacheContas){
+            this.contas[indice] = conta;
+            indice++;
+          }else{
+              throw new RepositorioCheioException();
+          }
         }
         else{
-            ContaExistenteException cee = new ContaExistenteException();
-            throw cee;
+            throw new ContaExistenteException();
         }
         
     }
 
     @Override
-    public void atualizar(ContaAbstrata conta) throws Exception{
-        if (existe(conta.getNumero())) {
-            int indice = procurarIndice(conta.getNumero());
-            if (indice != -1) {
-                contas[indice] = conta;
-            }
-        } else {
-            ContaNotFoundException cnfe = new ContaNotFoundException();
-            throw cnfe;
+    public void atualizar(ContaAbstrata conta) throws ContaNotFoundException{
+        int indice = procurarIndice(conta.getNumero());
+        if (indice != -1) {
+            contas[indice] = conta;
+        }else{
+            throw new ContaNotFoundException();
         }
-
     }
 
     private int procurarIndice(String numeroConta) {
@@ -54,42 +53,26 @@ public class RepositorioContasArray implements IRepContas {
         return -1;
     }
 
-    public void remover(String numeroConta) throws Exception{
-        if (existe(numeroConta)) {
+    public void remover(String numeroConta) throws ContaNotFoundException{
             int i = procurarIndice(numeroConta);
-            contas[i] = contas[indice - 1];
-            contas[indice - 1] = null;
-            indice = indice - 1;
-        } else {
-            ContaNotFoundException cnfe = new ContaNotFoundException();
-            throw cnfe;
-
-        }
-
-    }
-
-    public boolean existe(String numeroConta) {
-        for (int i = 0; i < tamCacheContas; i++) {
-            if (this.contas[i] != null) {
-                if (numeroConta.equals(contas[i].getNumero())) {
-                    return true;
-                }
+            if(i!=-1){
+                contas[i] = contas[indice - 1];
+                contas[indice - 1] = null;
+                indice = indice - 1;
+            }else{
+                throw new ContaNotFoundException();
             }
-        }
-        return false;
     }
+
 
     @Override
     public ContaAbstrata procurar(String numeroConta) throws Exception{
-        ContaAbstrata c = null;
-        if(existe(numeroConta)){
-            int i = procurarIndice(numeroConta);
-            c = contas[i];
+        int i = procurarIndice(numeroConta);
+        if(i!=-1){
+            return contas[i];
         }else{
-            ContaNotFoundException cnfe = new ContaNotFoundException();
-            throw cnfe;
+            throw new ContaNotFoundException();
         }
-        return c;
     }
 
 }
