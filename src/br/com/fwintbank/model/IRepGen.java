@@ -12,11 +12,11 @@ package br.com.fwintbank.model;
 public interface IRepGen<E> {
     
     
-    public abstract void inserir(E e);
+    public abstract void inserir(E e) throws Exception;
 
     public abstract void atualizar(E e) throws Exception;
 
-    public abstract void remover(E key) throws Exception;
+    public abstract void remover(String key) throws Exception;
 
     public abstract E procurar(String key) throws Exception;
 
