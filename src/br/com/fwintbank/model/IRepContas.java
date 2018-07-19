@@ -9,12 +9,7 @@ package br.com.fwintbank.model;
  *
  * @author felix
  */
-public interface IRepContas {
-    public abstract void inserir(ContaAbstrata conta);
-    public abstract void atualizar(ContaAbstrata conta);
-    public abstract void remover(String numConta);
-    public abstract boolean existe(String numConta);
-    public abstract ContaAbstrata procurar(String numConta);
-
+public interface IRepContas extends IRepGen<Conta>{
+//Metodos esoecificos do repositorio de conta
 }  
 
