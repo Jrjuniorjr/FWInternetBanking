@@ -29,8 +29,8 @@ public class Fachada {
         cadastroContas.inserir(conta); 
     }
 
-    public void removerConta(String numero) throws Exception {
-        cadastroContas.remover(numero);
+    public void removerConta(ContaAbstrata conta) throws Exception {
+        cadastroContas.remover(conta);
     }
 
     public ContaAbstrata consultarConta(String numero)throws Exception {
@@ -58,8 +58,8 @@ public class Fachada {
         cadastroCliente.inserir(cliente);
     }
 
-    public void removerliente(String cpf) throws Exception {
-        cadastroCliente.remover(cpf);      
+    public void removerliente(Cliente cliente) throws Exception {
+        cadastroCliente.remover(cliente);      
     }
 
     public Cliente consultarCliente(String cpf) throws Exception {

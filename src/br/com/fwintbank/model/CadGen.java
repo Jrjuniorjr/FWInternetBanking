@@ -10,8 +10,8 @@ public abstract class CadGen<E> {
     public void atualizar(E e) throws Exception{
         repositorio.atualizar(e);
     }
-    public void remover(String s)throws Exception{
-        repositorio.remover(s);
+    public void remover(E e)throws Exception{
+        repositorio.remover(e);
     }
     public E consultar(String s) throws Exception{
         return repositorio.procurar(s);
