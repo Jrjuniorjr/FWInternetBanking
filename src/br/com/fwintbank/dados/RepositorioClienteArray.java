@@ -35,8 +35,8 @@ public class RepositorioClienteArray implements IRepCliente {
                 }
 	}
 	
-	public void remover(String cpfCliente) throws ClienteNotFoundException{
-            int i= this.procurarIndice(cpfCliente);
+	public void remover(Cliente cliente) throws ClienteNotFoundException{
+            int i= this.procurarIndice(cliente.getCpf());
             if(i!=-1){
                 this.clientes[i]=this.clientes[this.indice-1];
                 this.clientes[indice-1]=null;

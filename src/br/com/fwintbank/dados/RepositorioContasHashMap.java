@@ -44,9 +44,9 @@ public class RepositorioContasHashMap implements IRepContas {
     }
 
     @Override
-    public void remover(String numConta) throws ContaNotFoundException{
-        if (mapa.containsKey(numConta)) {
-            mapa.remove(numConta);
+    public void remover(ContaAbstrata conta) throws ContaNotFoundException{
+        if (mapa.containsKey(conta.getNumero())) {
+            mapa.remove(conta.getNumero());
         } else {
             ContaNotFoundException cnfe = new ContaNotFoundException();
             throw cnfe;

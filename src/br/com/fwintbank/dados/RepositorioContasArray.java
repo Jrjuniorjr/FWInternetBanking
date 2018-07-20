@@ -53,8 +53,8 @@ public class RepositorioContasArray implements IRepContas {
         return -1;
     }
 
-    public void remover(String numeroConta) throws ContaNotFoundException{
-            int i = procurarIndice(numeroConta);
+    public void remover(ContaAbstrata conta) throws ContaNotFoundException{
+            int i = procurarIndice(conta.getNumero());
             if(i!=-1){
                 contas[i] = contas[indice - 1];
                 contas[indice - 1] = null;
