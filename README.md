@@ -13,7 +13,7 @@
  #### Repositorio array conta (tipos gerais ) <br />
  #### Repositorio array client <br />
  #### enum(tipo cliente) <br />
- #### Arquitetura MVC (interaces e classes astratas) <br />
+ #### Arquitetura MVC (interaces e classes abstratas) <br />
 
  ## [ ] 2a Milestone <p>
  #### Tratamento de execções  (por abstração) <br />
