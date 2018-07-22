@@ -3,9 +3,11 @@ package br.com.fwintbank.model;
 import br.com.fwintbank.model.Cliente;
 
 public abstract class ContaAbstrata {
+    
     private String numero;
     private double saldo;
     private Cliente cliente;
+    private ContasEnum tipo;
 
     public ContaAbstrata(String numero, double saldo, Cliente cliente) {
         this.numero = numero;
@@ -37,6 +39,12 @@ public abstract class ContaAbstrata {
     public Cliente getCliente() {
         return cliente;
     }
+
+    public ContasEnum getTipo() {
+        return tipo;
+    }
+    
+    
    
     public void transferir(ContaAbstrata destino, double quantia) throws Exception {
         this.debitar(quantia);
