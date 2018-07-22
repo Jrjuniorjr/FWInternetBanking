@@ -11,7 +11,7 @@ package br.com.fwintbank.model;
  */
 public enum ContasEnum {
     
-    POLPANCA,
+    POUPANCA,
     BONIFICADA,
     IMPOSTO;
     

@@ -5,8 +5,8 @@ import br.com.fwintbank.model.Cliente;
 public class ContaBonificada extends Conta{
     private double bonus;
     
-    public ContaBonificada(String numero, double saldo, Cliente cliente){
-        super(numero, saldo, cliente);
+    public ContaBonificada(String numero, double saldo, Cliente cliente, ContasEnum tipo){
+        super(numero, saldo, cliente, tipo);
         bonus = 0.0;
     }
     public double getBonus(){

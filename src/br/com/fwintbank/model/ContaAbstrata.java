@@ -9,10 +9,11 @@ public abstract class ContaAbstrata {
     private Cliente cliente;
     private ContasEnum tipo;
 
-    public ContaAbstrata(String numero, double saldo, Cliente cliente) {
+    public ContaAbstrata(String numero, double saldo, Cliente cliente, ContasEnum tipo) {
         this.numero = numero;
         this.saldo = saldo;
         this.cliente = cliente;
+        this.tipo = tipo;
     }
 
     public ContaAbstrata(String numero, Cliente cliente) {
