@@ -12,7 +12,7 @@ import java.sql.*;
 public class RepositorioClienteJDBC implements IRepCliente{
 
   
-    private void inserirEndereco(Cliente e){
+    private void inserirEndereco(Cliente e) throws Exception{
         try{
             String sql = "INSERT INTO TB_ENDERECO VALUES ( ? , ? , ? )";
             PreparedStatement stmt= JDBCConnectionUtil.getConnection().prepareStatement(sql);
@@ -21,7 +21,7 @@ public class RepositorioClienteJDBC implements IRepCliente{
             stmt.setString(3, e.getEndereco().getComplemento());
             stmt.executeUpdate();
         }catch(SQLException ex){
-            //Erro na execução do comando SQL;
+            throw ex;
         }
         
     }
@@ -49,7 +49,7 @@ public class RepositorioClienteJDBC implements IRepCliente{
              inserirEndereco(e);   
             }
         }catch(SQLException ex){
-            //Erro na execução do comando SQL;
+          throw ex;
         }
     }
 
@@ -71,7 +71,7 @@ public class RepositorioClienteJDBC implements IRepCliente{
             stmt2.executeUpdate();
             stmt3.executeUpdate();
         }catch(SQLException ex){
-            //Erro na execução do SQL
+            throw ex;
         }
     }
     
@@ -100,7 +100,7 @@ public class RepositorioClienteJDBC implements IRepCliente{
              atualizarEndereco(e);   
             }
         }catch(SQLException ex){
-            //erro na execucao do SQL
+            throw ex;
         }
     }
 
@@ -113,7 +113,7 @@ public class RepositorioClienteJDBC implements IRepCliente{
             stmt.executeUpdate();
             
         }catch(SQLException ex){
-            
+            throw ex;
         }
 
     }
@@ -143,7 +143,7 @@ public class RepositorioClienteJDBC implements IRepCliente{
             }
            
         }catch(SQLException ex){
-            
+            throw ex;
         }finally{
             return new Cliente(rsCPF,rsNOME,tipo,procurarEndereco(cpf));
         }
@@ -163,7 +163,7 @@ public class RepositorioClienteJDBC implements IRepCliente{
                 rsCOMP = rs.getString("COMPLEMENTO");
             }
         }catch(SQLException ex){
-            
+            throw ex;
         }finally{
             return new EnderecoCliente(rsCEP,rsNUMERO,rsCOMP);
         }
