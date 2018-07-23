@@ -7,8 +7,8 @@ public class ContaImposto extends ContaAbstrata {
 
     public static final double TAXA = 0.01;
 
-    public ContaImposto(String numero, double saldo, Cliente cliente) {
-        super(numero, saldo, cliente);
+    public ContaImposto(String numero, double saldo, Cliente cliente, ContasEnum tipo) {
+        super(numero, saldo, cliente, tipo);
     }
 
     public ContaImposto(String numero, Cliente cliente) {

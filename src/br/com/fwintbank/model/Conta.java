@@ -9,8 +9,8 @@ public class Conta extends ContaAbstrata {
         super(numero, cliente);
     }
 
-    public Conta(String numero, double saldo, Cliente cliente) {
-        super(numero, saldo, cliente);
+    public Conta(String numero, double saldo, Cliente cliente, ContasEnum tipo) {
+        super(numero, saldo, cliente, tipo);
     }
 
     @Override
