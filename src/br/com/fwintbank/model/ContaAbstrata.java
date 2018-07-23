@@ -1,16 +1,19 @@
-package contas;
+package br.com.fwintbank.model;
 
-import clientes.Cliente;
+import br.com.fwintbank.model.Cliente;
 
 public abstract class ContaAbstrata {
+    
     private String numero;
     private double saldo;
     private Cliente cliente;
+    private ContasEnum tipo;
 
-    public ContaAbstrata(String numero, double saldo, Cliente cliente) {
+    public ContaAbstrata(String numero, double saldo, Cliente cliente, ContasEnum tipo) {
         this.numero = numero;
         this.saldo = saldo;
         this.cliente = cliente;
+        this.tipo = tipo;
     }
 
     public ContaAbstrata(String numero, Cliente cliente) {
@@ -37,12 +40,18 @@ public abstract class ContaAbstrata {
     public Cliente getCliente() {
         return cliente;
     }
+
+    public ContasEnum getTipo() {
+        return tipo;
+    }
+    
+    
    
-    public void transferir(ContaAbstrata destino, double quantia) {
+    public void transferir(ContaAbstrata destino, double quantia) throws Exception {
         this.debitar(quantia);
         destino.creditar(quantia);
     }
-    public abstract void debitar(double quantia);
+    public abstract void debitar(double quantia) throws Exception;
     
    
     

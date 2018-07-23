@@ -3,16 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package contas;
+package br.com.fwintbank.exceptions;
 
 /**
  *
- * @author felix
+ * @author lucas
  */
-public enum ContasEnum {
+public class SaldoInsuficienteException extends Exception {
     
-    POLPANCA,
-    BONIFICADA,
-    IMPOSTO;
-    
+    public SaldoInsuficienteException(){
+        super("Saldo insuficiente!");
+    }
 }
