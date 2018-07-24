@@ -1,6 +1,7 @@
 package br.com.fwintbank.model;
 
 
+import java.util.ArrayList;
 import javax.persistence.*;
 
 
@@ -23,6 +24,13 @@ public class Cliente  implements Comparable<Cliente> {
     cascade= CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private EnderecoCliente endereco;
+    
+    @OneToMany(
+        mappedBy="cliente",
+        fetch=FetchType.LAZY
+    )
+    private ArrayList<ContaAbstrata> contas;
+   
 
     public Cliente(){}
 
@@ -60,6 +68,14 @@ public class Cliente  implements Comparable<Cliente> {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public ArrayList<ContaAbstrata> getContas() {
+        return contas;
+    }
+
+    public void setContas(ArrayList<ContaAbstrata> contas) {
+        this.contas = contas;
     }
     
     
