@@ -2,6 +2,7 @@ package br.com.fwintbank.model;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import javax.persistence.*;
 
 
@@ -31,6 +32,15 @@ public class Cliente  implements Comparable<Cliente> {
     )
     private ArrayList<ContaAbstrata> contas;
    
+    @ManyToMany(
+            targetEntity= Gerente.class
+    )
+    @JoinTable(
+            name="tb_gerentes_cliente",
+            joinColumns={ @JoinColumn(name="tb_cliente_cpf")},
+            inverseJoinColumns={ @JoinColumn(name="tb_gerente_id")}
+    )
+    private Collection<Gerente> gerentes;
 
     public Cliente(){}
 
