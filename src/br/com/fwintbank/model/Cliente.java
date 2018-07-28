@@ -1,6 +1,7 @@
 package br.com.fwintbank.model;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.*;
@@ -8,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table (name = "tb_cliente")
-public class Cliente  implements Comparable<Cliente> {
+public class Cliente extends Gen implements Comparable<Cliente>, Serializable {
     
     @Id
     @Column(name="cpf")

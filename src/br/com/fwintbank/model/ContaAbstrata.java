@@ -1,10 +1,12 @@
 package br.com.fwintbank.model;
 
 import br.com.fwintbank.model.Cliente;
+import java.io.Serializable;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "TB_CONTA")
-public abstract class ContaAbstrata {
+public abstract class ContaAbstrata  extends Gen implements Serializable{
 
     @Id
     @Column(name = "NUMERO")
