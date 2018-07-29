@@ -11,7 +11,7 @@ package br.com.fwintbank.model;
  */
 public class FactoryContas {
 
-    public static ContaAbstrata getTipoConta(String numero, double saldo, Cliente cliente, int tipo) {
+    public static ContaAbstrata criarContas(String numero, double saldo, Cliente cliente, int tipo) {
 
         switch (tipo) {
             case 0:

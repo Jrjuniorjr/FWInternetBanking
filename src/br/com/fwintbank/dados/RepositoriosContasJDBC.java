@@ -1,17 +1,15 @@
 package br.com.fwintbank.dados;
 
-
-import br.com.fwintbank.model.Conta;
-import br.com.fwintbank.model.ContaAbstrata;
-import br.com.fwintbank.model.ContaImposto;
-import br.com.fwintbank.model.ContasEnum;
-import br.com.fwintbank.model.FactoryContas;
-import br.com.fwintbank.model.IRepContas;
+import br.com.fwintbank.exceptions.*;
+import br.com.fwintbank.model.*;
 import br.com.fwintbank.model.util.JDBCConnectionUtil;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 /**
  *
@@ -19,86 +17,140 @@ import java.sql.SQLException;
  */
 public class RepositoriosContasJDBC implements IRepContas {
 
-	@Override
-	public void inserir(ContaAbstrata e) throws Exception {
-		// String sql = "INSERT INTO TB_CONTA " + "(NUMERO, SALDO TB_CLIENTE_CPF, TIPO)"
-		// + "VALUES(?, ?, ?, ?)";
-		String sql = "INSERT INTO TB_CONTA " + "(NUMERO, SALDO, TB_CLIENTE_CPF)" + "VALUES(?, ?, ?)";
-		try {
-			Connection conn = JDBCConnectionUtil.getConnection();
-			if (e != null) {
-				PreparedStatement stmt = conn.prepareStatement(sql);
-				stmt.setString(1, e.getNumero());
-				stmt.setDouble(2, e.consultarSaldo());
-				stmt.setString(3, sql);
-				// stmt.setInt(4, e.getTipo().ordinal());
-				stmt.executeUpdate();
-			}
-		} catch (SQLException ex) {
-			throw ex;
-		}
-	}
+    private Properties getProperties() throws IOException {
+        Properties properties = new Properties();
+        FileInputStream arquivo = new FileInputStream("PropertiesSql.properties");
+        properties.load(arquivo);
+        return properties;
+    }
 
-	@Override
-	public void atualizar(ContaAbstrata e) throws Exception {
-		// String sql = "UPDATE TB_CONTA SET NUMERO = ?, SALDO = ?, TB_CLIENTE_CPF, TIPO
-		// = ? WHERE NUMERO = ?";
-		String sql = "UPDATE TB_CONTA SET NUMERO = ?, SALDO = ?, TB_CLIENTE_CPF WHERE NUMERO = ?";
+    private boolean existeConta(String numero) throws Exception {
+        boolean existe = false;
+        try {
+            ContaAbstrata conta = procurar(numero);
+            if (conta.getNumero() != null) {
+                existe = true;
+            }
+        } catch (SQLException e) {
+            throw e;
+        } catch (ContaNotFoundException e) {
+            existe = false;
+        }
+        return existe;
+    }
 
-		try {
-			Connection conn = JDBCConnectionUtil.getConnection();
-			if (e != null) {
-				PreparedStatement stmt = conn.prepareStatement(sql);
-				stmt.setString(1, e.getNumero());
-				stmt.setDouble(2, e.consultarSaldo());
-				stmt.setString(3, sql);
-				// stmt.setInt(4, e.getTipo().ordinal());
-				stmt.setString(4, e.getNumero());
-				stmt.executeUpdate();
-			}
-		} catch (SQLException ex) {
-			throw ex;
-		}
-	}
+    @Override
+    public void inserir(ContaAbstrata e) throws Exception {
+        String sql;
+        Properties properties;
+        Connection conn;
+        PreparedStatement stmt;
+        if (existeConta(e.getNumero())) {
+            throw new ContaExistenteException();
+        } else {
+            try {
+                properties = getProperties();
+                sql = properties.getProperty("sql.inserir");
+                conn = JDBCConnectionUtil.getConnection();
+                stmt = conn.prepareStatement(sql);
+                if (e != null) {
+                    stmt.setString(1, e.getCliente().getCpf());
+                    stmt.setString(2, e.getNumero());
+                    stmt.setDouble(3, e.consultarSaldo());
+                    stmt.setInt(4, e.getTipo().ordinal());
+                    stmt.executeUpdate();
+                    stmt.close();
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                throw ex;
+            }
+        }
 
-	@Override
-	public void remover(ContaAbstrata e) throws Exception {
-		String sql = "DELETE FROM TB_CONTA WHERE NUMERO = ?";
-		try {
-			Connection conn = JDBCConnectionUtil.getConnection();
-			if (e != null) {
-				PreparedStatement stmt = conn.prepareStatement(sql);
-				stmt.setString(1, e.getNumero());
-				stmt.executeUpdate();
+    }
 
-			}
-		} catch (SQLException ex) {
-			throw ex;
-		}
-	}
+    @Override
+    public void atualizar(ContaAbstrata e) throws Exception {
+        Properties properties;
+        Connection conn;
+        String sql;
+        PreparedStatement stmt;
+        try {
+            if (e != null) {
+                if (existeConta(e.getNumero())) {
+                    properties = getProperties();
+                    sql = properties.getProperty("sql.atualizar");
+                    conn = JDBCConnectionUtil.getConnection();
+                    stmt = conn.prepareStatement(sql);
+                    stmt.setString(1, e.getCliente().getCpf());
+                    stmt.setString(1, e.getNumero());
+                    stmt.setDouble(2, e.consultarSaldo());
+                    stmt.setInt(4, e.getTipo().ordinal());
+                    stmt.executeUpdate();
+                    stmt.close();
+                    conn.close();
+                }
+            } else {
+                throw new ContaNotFoundException();
+            }
+        } catch (SQLException ex) {
+            throw ex;
+        }
+    }
 
-	@Override
-	public ContaAbstrata procurar(String key) throws Exception {
-		ContaAbstrata conta = null;
-		FactoryContas factory = new FactoryContas();
+    @Override
+    public void remover(ContaAbstrata e) throws Exception {
+        Properties properties;
+        Connection conn;
+        String sql;
+        PreparedStatement stmt;
+        if (e != null) {
+            if (existeConta(e.getNumero())) {
+                try {
+                    properties = getProperties();
+                    sql = properties.getProperty("sql.remover");
+                    conn = JDBCConnectionUtil.getConnection();
+                    stmt = conn.prepareStatement(sql);
+                    stmt.setString(1, e.getNumero());
+                    stmt.executeUpdate();
+                    stmt.close();
+                    conn.close();
+                } catch (SQLException ex) {
+                    throw ex;
+                }
+            } else {
+                throw new ContaNotFoundException();
+            }
 
-		String sql = "SELECT * FROM TB_CONTA WHERE NUMERO = ?";
-		try {
-			Connection conn = JDBCConnectionUtil.getConnection();
-			if (key != null) {
-				PreparedStatement stmt = conn.prepareStatement(sql);
-				stmt.setString(1, key);
-				ResultSet rs = stmt.executeQuery(sql);
-				conta = factory.getTipoConta(rs.getString("NUMERO"), rs.getDouble("SALDO"), null, rs.getInt("TIPO"));
-				return conta;
+        }
+    }
 
-			}
-		} catch (SQLException ex) {
-			throw ex;
-		}
-		return conta;
-	}
+    @Override
+    public ContaAbstrata procurar(String key) throws Exception {
+        Properties properties;
+        Connection conn;
+        String sql;
+        PreparedStatement stmt;
+        ContaAbstrata conta = null;
+        try {
+            if (key != null) {
+                properties = getProperties();
+                sql = properties.getProperty("sql.procurar");
+                conn = JDBCConnectionUtil.getConnection();
+                stmt = conn.prepareStatement(sql);
+                stmt.setString(1, key);
+                ResultSet rs = stmt.executeQuery(sql);
+                if (rs.getString("NUMERO") != null) {
+                    conta = FactoryContas.criarContas(rs.getString("NUMERO"), rs.getDouble("SALDO"), null, rs.getInt("TIPO"));
+                } else {
+                    throw new ContaNotFoundException();
+                }
 
-}
+            }
+        } catch (SQLException ex) {
+            throw ex;
+        }
+        return conta;
+    }
 
 }
