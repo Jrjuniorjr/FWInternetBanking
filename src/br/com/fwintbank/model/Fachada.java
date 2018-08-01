@@ -13,7 +13,7 @@ public class Fachada {
 
     
     private Fachada(){
-        cadastroCliente = new CadCliente(new RepositorioClienteTreeSet());
+        cadastroCliente = new CadCliente(new RepositorioClienteJDBC());
         cadastroContas = new CadConta(new RepositorioContasArray());
     }
 
@@ -58,7 +58,7 @@ public class Fachada {
         cadastroCliente.inserir(cliente);
     }
 
-    public void removerliente(Cliente cliente) throws Exception {
+    public void removercliente(Cliente cliente) throws Exception {
         cadastroCliente.remover(cliente);      
     }
 
