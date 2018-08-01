@@ -124,7 +124,11 @@ public class RepositorioContasJDBC implements IRepContas {
                 stmt.setString(1, key);
                 ResultSet rs = stmt.executeQuery(sql);
                 if (rs.getString("NUMERO") != null) {
-                    conta = FactoryContas.criarContas(rs.getString("NUMERO"), rs.getDouble("SALDO"), null, rs.getInt("TIPO"));
+                    conta = FactoryContas.criarContas(rs.getInt("TIPO"));
+                    conta.setNumero(rs.getString("NUMERO"));
+                    conta.creditar(rs.getDouble("SALDO"));
+                    conta.setCliente(null); 
+                    conta.setTipo(ContasEnum.convertIntToEnum(rs.getInt("TIPO")));
                 } else {
                     throw new ContaNotFoundException();
                 }

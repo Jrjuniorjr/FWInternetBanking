@@ -37,7 +37,7 @@ public abstract class ContaAbstrata  extends Gen implements Serializable{
     }
 
     public ContaAbstrata() {
-
+        saldo = 0.0;
     }
 
     public double getSaldo() {

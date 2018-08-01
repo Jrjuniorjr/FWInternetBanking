@@ -11,15 +11,15 @@ package br.com.fwintbank.model;
  */
 public class FactoryContas {
 
-    public static ContaAbstrata criarContas(String numero, double saldo, Cliente cliente, int tipo) {
+    public static ContaAbstrata criarContas(int tipo) {
 
         switch (tipo) {
             case 0:
-                return new ContaPoupanca(numero, saldo, cliente, ContasEnum.POUPANCA);
+                return new ContaPoupanca();
             case 1:
-                return new ContaBonificada(numero, saldo, cliente, ContasEnum.BONIFICADA);
+                return new ContaBonificada();
             case 2:
-                return new ContaImposto(numero, saldo, cliente, ContasEnum.IMPOSTO);
+                return new ContaImposto();
         }
 
         return null;
