@@ -1,7 +1,12 @@
 package br.com.fwintbank.model;
 
 import br.com.fwintbank.model.Cliente;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
+
+@Entity
+@DiscriminatorValue("2")
 public class ContaBonificada extends Conta{
     private double bonus;
     
@@ -11,6 +16,15 @@ public class ContaBonificada extends Conta{
     }
     public double getBonus(){
         return bonus;
+    }
+
+    public ContaBonificada() {
+        super();
+        bonus = 0.0;
+    }
+
+    public void setBonus(double bonus) {
+        this.bonus = bonus;
     }
     
     @Override
