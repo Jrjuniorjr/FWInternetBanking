@@ -6,6 +6,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "TB_CONTA")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "TIPO", discriminatorType = DiscriminatorType.INTEGER)
 public abstract class ContaAbstrata  extends Gen implements Serializable{
 
     @Id
@@ -19,7 +21,6 @@ public abstract class ContaAbstrata  extends Gen implements Serializable{
     @JoinColumn(name = "TB_CLIENTE_CPF")
     private Cliente cliente;
 
-    //@Column (name = "TIPO")
     private ContasEnum tipo;
 
     public ContaAbstrata(String numero, double saldo, Cliente cliente, ContasEnum tipo) {

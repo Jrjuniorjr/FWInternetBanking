@@ -13,6 +13,11 @@ public class Conta extends ContaAbstrata {
         super(numero, saldo, cliente, tipo);
     }
 
+    public Conta() {
+        super();
+    }
+    
+
     @Override
     public void debitar(double quantia) throws Exception{
         if(quantia <= consultarSaldo()){

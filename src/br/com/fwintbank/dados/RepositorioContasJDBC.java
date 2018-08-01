@@ -16,7 +16,7 @@ import java.util.Properties;
  *
  * @author Junior
  */
-public class RepositoriosContasJDBC implements IRepContas {
+public class RepositorioContasJDBC implements IRepContas {
 
 
     private boolean existeConta(String numero) throws Exception {
