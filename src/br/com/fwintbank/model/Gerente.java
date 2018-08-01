@@ -5,6 +5,7 @@
  */
 package br.com.fwintbank.model;
 
+import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.*;
 
@@ -15,7 +16,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name= "tb_cliente")
-public class Gerente {
+public class Gerente implements Serializable {
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY )

@@ -1,5 +1,6 @@
 package br.com.fwintbank.model;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="tb_endereco")
-public class EnderecoCliente {
+public class EnderecoCliente implements Serializable{
     
         @Id
         @Column (
