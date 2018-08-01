@@ -51,7 +51,7 @@ public abstract class ContaAbstrata  extends Gen implements Serializable{
         return saldo;
     }
 
-    protected void setSaldo(double saldo) {
+    public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
 
