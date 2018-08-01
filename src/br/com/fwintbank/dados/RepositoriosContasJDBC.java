@@ -3,6 +3,7 @@ package br.com.fwintbank.dados;
 import br.com.fwintbank.exceptions.*;
 import br.com.fwintbank.model.*;
 import br.com.fwintbank.model.util.JDBCConnectionUtil;
+import br.com.fwintbank.model.util.SQLUtil;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -17,12 +18,6 @@ import java.util.Properties;
  */
 public class RepositoriosContasJDBC implements IRepContas {
 
-    private Properties getProperties() throws IOException {
-        Properties properties = new Properties();
-        FileInputStream arquivo = new FileInputStream("PropertiesSql.properties");
-        properties.load(arquivo);
-        return properties;
-    }
 
     private boolean existeConta(String numero) throws Exception {
         boolean existe = false;
@@ -41,16 +36,13 @@ public class RepositoriosContasJDBC implements IRepContas {
 
     @Override
     public void inserir(ContaAbstrata e) throws Exception {
-        String sql;
-        Properties properties;
         Connection conn;
         PreparedStatement stmt;
+        String sql = SQLUtil.getProperties().getProperty("sql.conta.inserir");
         if (existeConta(e.getNumero())) {
             throw new ContaExistenteException();
         } else {
             try {
-                properties = getProperties();
-                sql = properties.getProperty("sql.inserir");
                 conn = JDBCConnectionUtil.getConnection();
                 stmt = conn.prepareStatement(sql);
                 if (e != null) {
@@ -71,15 +63,12 @@ public class RepositoriosContasJDBC implements IRepContas {
 
     @Override
     public void atualizar(ContaAbstrata e) throws Exception {
-        Properties properties;
         Connection conn;
-        String sql;
         PreparedStatement stmt;
+        String sql = SQLUtil.getProperties().getProperty("sql.conta.atualizar");
         try {
             if (e != null) {
                 if (existeConta(e.getNumero())) {
-                    properties = getProperties();
-                    sql = properties.getProperty("sql.atualizar");
                     conn = JDBCConnectionUtil.getConnection();
                     stmt = conn.prepareStatement(sql);
                     stmt.setString(1, e.getCliente().getCpf());
@@ -100,15 +89,12 @@ public class RepositoriosContasJDBC implements IRepContas {
 
     @Override
     public void remover(ContaAbstrata e) throws Exception {
-        Properties properties;
         Connection conn;
-        String sql;
+        String sql = SQLUtil.getProperties().getProperty("sql.conta.remover");
         PreparedStatement stmt;
         if (e != null) {
             if (existeConta(e.getNumero())) {
                 try {
-                    properties = getProperties();
-                    sql = properties.getProperty("sql.remover");
                     conn = JDBCConnectionUtil.getConnection();
                     stmt = conn.prepareStatement(sql);
                     stmt.setString(1, e.getNumero());
@@ -127,15 +113,12 @@ public class RepositoriosContasJDBC implements IRepContas {
 
     @Override
     public ContaAbstrata procurar(String key) throws Exception {
-        Properties properties;
         Connection conn;
-        String sql;
+        String sql= SQLUtil.getProperties().getProperty("sql.conta.procurar");
         PreparedStatement stmt;
         ContaAbstrata conta = null;
         try {
             if (key != null) {
-                properties = getProperties();
-                sql = properties.getProperty("sql.procurar");
                 conn = JDBCConnectionUtil.getConnection();
                 stmt = conn.prepareStatement(sql);
                 stmt.setString(1, key);
