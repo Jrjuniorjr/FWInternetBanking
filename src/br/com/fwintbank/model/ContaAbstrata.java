@@ -4,7 +4,7 @@ import br.com.fwintbank.model.Cliente;
 import java.io.Serializable;
 import javax.persistence.*;
 
-@Entity(name = "ContaAbstrata")
+@Entity
 @Table(name = "TB_CONTA")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "TIPO", discriminatorType = DiscriminatorType.INTEGER)
@@ -37,7 +37,7 @@ public abstract class ContaAbstrata  extends Gen implements Serializable{
     }
 
     public ContaAbstrata() {}
-    
+
 
     public double getSaldo() {
         return saldo;

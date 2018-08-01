@@ -5,6 +5,7 @@
  */
 package br.com.fwintbank.dados;
 
+import br.com.fwintbank.exceptions.ContaExistenteException;
 import br.com.fwintbank.exceptions.ContaNotFoundException;
 import br.com.fwintbank.model.ContaAbstrata;
 import br.com.fwintbank.model.IRepContas;
@@ -48,8 +49,12 @@ public class RepositorioSerializadoContas implements IRepContas {
         Map<String, ContaAbstrata> colecao;
         try {
             colecao = lerContas();
-            colecao.put(e.getNumero(), e);
-            gravarContas(colecao);
+            if (!colecao.containsKey(e.getNumero())) {
+                colecao.put(e.getNumero(), e);
+                gravarContas(colecao);
+            } else {
+                throw new ContaExistenteException();
+            }
 
         } catch (FileNotFoundException ex) {
             colecao = new HashMap<>();
@@ -63,11 +68,11 @@ public class RepositorioSerializadoContas implements IRepContas {
         Map<String, ContaAbstrata> colecao;
         try {
             colecao = lerContas();
-            if(colecao.containsKey(e.getNumero())){
+            if (colecao.containsKey(e.getNumero())) {
                 colecao.remove(e.getNumero());
                 colecao.put(e.getNumero(), e);
-            }
-            else{
+                gravarContas(colecao);
+            } else {
                 throw new ContaNotFoundException();
             }
         } catch (FileNotFoundException ex) {
@@ -80,16 +85,16 @@ public class RepositorioSerializadoContas implements IRepContas {
         Map<String, ContaAbstrata> colecao;
         try {
             colecao = lerContas();
-            if(colecao.containsKey(e.getNumero())){
-                colecao.put(e.getNumero(), e);
-            }
-            else{
+            if (colecao.containsKey(e.getNumero())) {
+                colecao.remove(e.getNumero());
+                gravarContas(colecao);
+            } else {
                 throw new ContaNotFoundException();
             }
         } catch (FileNotFoundException ex) {
             throw new ContaNotFoundException();
         }
-        
+
     }
 
     @Override
@@ -98,16 +103,15 @@ public class RepositorioSerializadoContas implements IRepContas {
         ContaAbstrata conta = null;
         try {
             colecao = lerContas();
-            if(colecao.containsKey(key)){
+            if (colecao.containsKey(key)) {
                 conta = colecao.get(key);
-            }
-            else{
+            } else {
                 throw new ContaNotFoundException();
             }
         } catch (FileNotFoundException ex) {
             throw new ContaNotFoundException();
         }
-        
+
         return conta;
     }
 
