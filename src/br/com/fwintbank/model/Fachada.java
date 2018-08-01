@@ -13,8 +13,8 @@ public class Fachada {
 
     
     private Fachada(){
-        cadastroCliente = new CadCliente(new RepositorioClienteJDBC());
-        cadastroContas = new CadConta(new RepositorioContasArray());
+        cadastroCliente = new CadCliente(new RepositorioClienteHibernate());
+        cadastroContas = new CadConta(new RepositorioSerializadoContas());
     }
 
     public static Fachada getInstance() {

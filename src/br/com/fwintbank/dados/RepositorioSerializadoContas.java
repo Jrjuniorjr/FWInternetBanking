@@ -9,6 +9,7 @@ import br.com.fwintbank.exceptions.ContaExistenteException;
 import br.com.fwintbank.exceptions.ContaNotFoundException;
 import br.com.fwintbank.model.ContaAbstrata;
 import br.com.fwintbank.model.IRepContas;
+import br.com.fwintbank.model.util.SerilizacaoUtil;
 import com.sun.corba.se.impl.io.IIOPOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,33 +26,15 @@ import java.util.Map;
  */
 public class RepositorioSerializadoContas implements IRepContas {
 
-    private String arq = "contas.ser";
-
-    private void gravarContas(Map colecao) throws Exception {
-        FileOutputStream fos = new FileOutputStream(arq);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(colecao);
-        oos.close();
-        fos.close();
-    }
-
-    private Map lerContas() throws Exception {
-        FileInputStream fis = new FileInputStream(arq);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        Map colecaoContas = (HashMap) ois.readObject();
-        ois.close();
-        fis.close();
-        return colecaoContas;
-    }
-
+    private final String localArquivo = "contas.ser";
     @Override
     public void inserir(ContaAbstrata e) throws Exception {
         Map<String, ContaAbstrata> colecao;
         try {
-            colecao = lerContas();
+            colecao = SerilizacaoUtil.deserializar(localArquivo);
             if (!colecao.containsKey(e.getNumero())) {
                 colecao.put(e.getNumero(), e);
-                gravarContas(colecao);
+                SerilizacaoUtil.serializar(colecao, localArquivo);
             } else {
                 throw new ContaExistenteException();
             }
@@ -59,7 +42,7 @@ public class RepositorioSerializadoContas implements IRepContas {
         } catch (FileNotFoundException ex) {
             colecao = new HashMap<>();
             colecao.put(e.getNumero(), e);
-            gravarContas(colecao);
+            SerilizacaoUtil.serializar(colecao, localArquivo);
         }
     }
 
@@ -67,11 +50,11 @@ public class RepositorioSerializadoContas implements IRepContas {
     public void atualizar(ContaAbstrata e) throws Exception {
         Map<String, ContaAbstrata> colecao;
         try {
-            colecao = lerContas();
+            colecao = SerilizacaoUtil.deserializar(localArquivo);
             if (colecao.containsKey(e.getNumero())) {
                 colecao.remove(e.getNumero());
                 colecao.put(e.getNumero(), e);
-                gravarContas(colecao);
+                SerilizacaoUtil.serializar(colecao, localArquivo);
             } else {
                 throw new ContaNotFoundException();
             }
@@ -84,10 +67,10 @@ public class RepositorioSerializadoContas implements IRepContas {
     public void remover(ContaAbstrata e) throws Exception {
         Map<String, ContaAbstrata> colecao;
         try {
-            colecao = lerContas();
+            colecao = SerilizacaoUtil.deserializar(localArquivo);
             if (colecao.containsKey(e.getNumero())) {
                 colecao.remove(e.getNumero());
-                gravarContas(colecao);
+                SerilizacaoUtil.serializar(colecao, localArquivo);
             } else {
                 throw new ContaNotFoundException();
             }
@@ -102,7 +85,7 @@ public class RepositorioSerializadoContas implements IRepContas {
         Map<String, ContaAbstrata> colecao;
         ContaAbstrata conta = null;
         try {
-            colecao = lerContas();
+            colecao = SerilizacaoUtil.deserializar(localArquivo);
             if (colecao.containsKey(key)) {
                 conta = colecao.get(key);
             } else {
