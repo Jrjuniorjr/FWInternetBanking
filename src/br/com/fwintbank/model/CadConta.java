@@ -18,6 +18,7 @@ public class CadConta extends CadGen<ContaAbstrata> {
     ContaAbstrata a;
 
     public CadConta(IRepContas i) {
+        super(i);
         this.irep = i;
     }
 
