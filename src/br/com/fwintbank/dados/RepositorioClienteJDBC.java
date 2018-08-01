@@ -17,10 +17,10 @@ public class RepositorioClienteJDBC implements IRepCliente{
         String sql= SQLUtil.getProperties().getProperty("sql.endereco.inserir");
         try{
             stmt= JDBCConnectionUtil.getConnection().prepareStatement(sql);
-            stmt.setString(1, e.getEndereco().getCep());
-            stmt.setString(2, e.getEndereco().getNumero());
-            stmt.setString(3, e.getEndereco().getComplemento());
-            stmt.setString(4, e.getCpf());
+            stmt.setString(2, e.getEndereco().getCep());
+            stmt.setString(3, e.getEndereco().getNumero());
+            stmt.setString(4, e.getEndereco().getComplemento());
+            stmt.setString(1, e.getCpf());
             stmt.executeUpdate();
         }catch(SQLException ex){
             throw ex;
@@ -39,8 +39,8 @@ public class RepositorioClienteJDBC implements IRepCliente{
         try{
             PreparedStatement stmt = JDBCConnectionUtil.getConnection().prepareStatement(sql);
             stmt.setString(1, e.getCpf());
-            stmt.setString(2, i.toString());
-            stmt.setString(3, e.getNome());                
+            stmt.setString(3, i.toString());
+            stmt.setString(2, e.getNome());                
             stmt.executeUpdate();
             
             if(e.getEndereco()!=null){
