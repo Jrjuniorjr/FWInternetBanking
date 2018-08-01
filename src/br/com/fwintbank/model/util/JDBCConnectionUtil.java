@@ -44,12 +44,8 @@ public class JDBCConnectionUtil {
         pass=p.getProperty("jdbc.pass");
         try {
             Class.forName(driver);
-            connection = DriverManager.getConnection(url,user,pass);
         } catch (ClassNotFoundException ex) {
             System.out.println("Erro ao carregar o driver JDBC do HSQLDB.");
-            System.exit(-1);
-        }catch (SQLException e) {
-            System.out.println("Exceção de conexão.");
             System.exit(-1);
         }
     }
