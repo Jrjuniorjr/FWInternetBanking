@@ -36,9 +36,8 @@ public abstract class ContaAbstrata  extends Gen implements Serializable{
         saldo = 0.0;
     }
 
-    public ContaAbstrata() {
-    }
-    
+    public ContaAbstrata() {}
+
 
     public double getSaldo() {
         return saldo;

@@ -18,8 +18,8 @@ public class Cliente extends Gen implements Comparable<Cliente>, Serializable {
     @Column(name="nome")
     private String nome;
 
-
-    @Transient
+    @Enumerated
+    @Column(columnDefinition = "tinyint")
     private TipoCliente tipo;
     
     @OneToOne(
