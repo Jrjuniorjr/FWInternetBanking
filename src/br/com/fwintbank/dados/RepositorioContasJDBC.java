@@ -18,45 +18,25 @@ import java.util.Properties;
  */
 public class RepositorioContasJDBC implements IRepContas {
 
-
-    private boolean existeConta(String numero) throws Exception {
-        boolean existe = false;
-        try {
-            ContaAbstrata conta = procurar(numero);
-            if (conta.getNumero() != null) {
-                existe = true;
-            }
-        } catch (SQLException e) {
-            throw e;
-        } catch (ContaNotFoundException e) {
-            existe = false;
-        }
-        return existe;
-    }
-
     @Override
     public void inserir(ContaAbstrata e) throws Exception {
         Connection conn;
         PreparedStatement stmt;
         String sql = SQLUtil.getProperties().getProperty("sql.conta.inserir");
-        if (existeConta(e.getNumero())) {
-            throw new ContaExistenteException();
-        } else {
-            try {
-                conn = JDBCConnectionUtil.getConnection();
-                stmt = conn.prepareStatement(sql);
-                if (e != null) {
-                    stmt.setString(1, e.getCliente().getCpf());
-                    stmt.setString(2, e.getNumero());
-                    stmt.setDouble(3, e.consultarSaldo());
-                    stmt.setInt(4, e.getTipo().ordinal());
-                    stmt.executeUpdate();
-                    stmt.close();
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                throw ex;
+        try {
+            conn = JDBCConnectionUtil.getConnection();
+            stmt = conn.prepareStatement(sql);
+            if (e != null) {
+                stmt.setString(1, e.getCliente().getCpf());
+                stmt.setString(2, e.getNumero());
+                stmt.setDouble(3, e.consultarSaldo());
+                stmt.setInt(4, e.getTipo().ordinal());
+                stmt.executeUpdate();
+                stmt.close();
+                conn.close();
             }
+        } catch (SQLException ex) {
+            throw ex;
         }
 
     }
@@ -68,19 +48,15 @@ public class RepositorioContasJDBC implements IRepContas {
         String sql = SQLUtil.getProperties().getProperty("sql.conta.atualizar");
         try {
             if (e != null) {
-                if (existeConta(e.getNumero())) {
-                    conn = JDBCConnectionUtil.getConnection();
-                    stmt = conn.prepareStatement(sql);
-                    stmt.setString(1, e.getCliente().getCpf());
-                    stmt.setString(1, e.getNumero());
-                    stmt.setDouble(2, e.consultarSaldo());
-                    stmt.setInt(4, e.getTipo().ordinal());
-                    stmt.executeUpdate();
-                    stmt.close();
-                    conn.close();
-                }
-            } else {
-                throw new ContaNotFoundException();
+                conn = JDBCConnectionUtil.getConnection();
+                stmt = conn.prepareStatement(sql);
+                stmt.setString(1, e.getCliente().getCpf());
+                stmt.setString(1, e.getNumero());
+                stmt.setDouble(2, e.consultarSaldo());
+                stmt.setInt(4, e.getTipo().ordinal());
+                stmt.executeUpdate();
+                stmt.close();
+                conn.close();
             }
         } catch (SQLException ex) {
             throw ex;
@@ -92,29 +68,22 @@ public class RepositorioContasJDBC implements IRepContas {
         Connection conn;
         String sql = SQLUtil.getProperties().getProperty("sql.conta.remover");
         PreparedStatement stmt;
-        if (e != null) {
-            if (existeConta(e.getNumero())) {
-                try {
-                    conn = JDBCConnectionUtil.getConnection();
-                    stmt = conn.prepareStatement(sql);
-                    stmt.setString(1, e.getNumero());
-                    stmt.executeUpdate();
-                    stmt.close();
-                    conn.close();
-                } catch (SQLException ex) {
-                    throw ex;
-                }
-            } else {
-                throw new ContaNotFoundException();
-            }
-
+        try {
+            conn = JDBCConnectionUtil.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, e.getNumero());
+            stmt.executeUpdate();
+            stmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            throw ex;
         }
     }
 
     @Override
     public ContaAbstrata procurar(String key) throws Exception {
         Connection conn;
-        String sql= SQLUtil.getProperties().getProperty("sql.conta.procurar");
+        String sql = SQLUtil.getProperties().getProperty("sql.conta.procurar");
         PreparedStatement stmt;
         ContaAbstrata conta = null;
         try {
@@ -122,22 +91,63 @@ public class RepositorioContasJDBC implements IRepContas {
                 conn = JDBCConnectionUtil.getConnection();
                 stmt = conn.prepareStatement(sql);
                 stmt.setString(1, key);
-                ResultSet rs = stmt.executeQuery(sql);
-                if (rs.getString("NUMERO") != null) {
-                    conta = FactoryContas.criarContas(rs.getInt("TIPO"));
-                    conta.setNumero(rs.getString("NUMERO"));
-                    conta.creditar(rs.getDouble("SALDO"));
-                    conta.setCliente(null); 
-                    conta.setTipo(ContasEnum.convertIntToEnum(rs.getInt("TIPO")));
-                } else {
-                    throw new ContaNotFoundException();
-                }
+                ResultSet rs = stmt.executeQuery();
+                conta = FactoryContas.criarContas(rs.getInt("TIPO"));
+                conta.setNumero(rs.getString("NUMERO"));
+                conta.creditar(rs.getDouble("SALDO"));
+                conta.setCliente(procurarCliente(rs.getString("TB_CLIENTE_CPF")));
+                conta.setTipo(ContasEnum.convertIntToEnum(rs.getInt("TIPO")));
 
             }
         } catch (SQLException ex) {
             throw ex;
         }
         return conta;
+    }
+
+    private Cliente procurarCliente(String key) throws Exception {
+        Connection conn;
+        String sql = SQLUtil.getProperties().getProperty("sql.cliente.procurar");
+        PreparedStatement stmt;
+        Cliente cliente = null;
+        TipoCliente tipo = TipoCliente.STANDARD;
+        try {
+            if (key != null) {
+                conn = JDBCConnectionUtil.getConnection();
+                stmt = conn.prepareStatement(sql);
+                stmt.setString(1, key);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.getString("CPF") != null) {
+                    tipo = TipoCliente.values()[rs.getInt("TIPO")];
+                    cliente = new Cliente(rs.getString("CPF"), rs.getString("NOME"), tipo, procurarEndereco(rs.getString("CPF")));
+                }
+            } else {
+                throw new ClienteNotFoundException();
+            }
+        } catch (SQLException ex) {
+            throw ex;
+        }
+        return cliente;
+
+    }
+
+    private EnderecoCliente procurarEndereco(String cpf) throws Exception {
+        String sql = SQLUtil.getProperties().getProperty("sql.endereco.procurar");
+        Connection conn;
+        PreparedStatement stmt;
+        EnderecoCliente endereco = null;
+        try {
+            conn = JDBCConnectionUtil.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, cpf);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.getString("CPF") != null) {
+                endereco = new EnderecoCliente(rs.getString("CEP"), rs.getString("NUMERO"), rs.getString("COMPLEMENTO"), rs.getString("CPF"));
+            }
+        } catch (SQLException ex) {
+            throw ex;
+        }
+        return endereco;
     }
 
 }
