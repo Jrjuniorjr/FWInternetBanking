@@ -15,4 +15,12 @@ public enum ContasEnum {
     BONIFICADA,
     IMPOSTO;
     
+    public static ContasEnum convertIntToEnum(int tipo){
+        switch(tipo){
+            case 1: return POUPANCA;
+            case 2: return BONIFICADA;
+            case 3: return IMPOSTO;
+            default: return null;
+        }
+    }
 }

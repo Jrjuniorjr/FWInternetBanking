@@ -1,14 +1,20 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package br.com.fwintbank.model.util;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Savepoint;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,21 +22,34 @@ import java.sql.Savepoint;
  */
 public class JDBCConnectionUtil {
 
-    private static String url = "jdbc:hsqldb:hsql://localhost:9090/qib";
-    private static String driver = "org.hsqldb.jdbcDriver";
-    private static String user = "sa";
-    private static String pass = "";
+    private static String url;
+    private static String driver;
+    private static String user;
+    private static String pass;
     private static Connection connection;
-
+    private static Properties p;
+    
     static {
+        p=new Properties();
+        try {
+            p.load(new FileInputStream("PropertiesJDBC.properties"));
+        } catch (FileNotFoundException ex) {
+            System.out.println("Arquivo nao encontrado");
+        } catch (IOException ex) {
+            System.out.println("Erro ao ler PropertiesJDBC.properties");
+        }
+        driver=p.getProperty("jdbc.driver");
+        url= p.getProperty("jdbc.url");
+        user=p.getProperty("jdbc.user");
+        pass=p.getProperty("jdbc.pass");
         try {
             Class.forName(driver);
             connection = DriverManager.getConnection(url, user, pass);
         } catch (ClassNotFoundException ex) {
             System.out.println("Erro ao carregar o driver JDBC do HSQLDB.");
             System.exit(-1);
-        }catch (SQLException e) {
-            System.out.println("Exceção de conexão.");
+        } catch (SQLException ex){
+            System.out.println("Erro de conexão.");
             System.exit(-1);
         }
     }

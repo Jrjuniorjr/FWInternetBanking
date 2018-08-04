@@ -13,36 +13,34 @@ public class RepositorioClienteJDBC implements IRepCliente{
 
   
     private void inserirEndereco(Cliente e) throws Exception{
+        PreparedStatement stmt=null;
+        String sql= SQLUtil.getProperties().getProperty("sql.endereco.inserir");
         try{
-            String sql = "INSERT INTO TB_ENDERECO VALUES ( ? , ? , ? )";
-            PreparedStatement stmt= JDBCConnectionUtil.getConnection().prepareStatement(sql);
-            stmt.setString(1, e.getEndereco().getCep());
-            stmt.setString(2, e.getEndereco().getNumero());
-            stmt.setString(3, e.getEndereco().getComplemento());
+            stmt= JDBCConnectionUtil.getConnection().prepareStatement(sql);
+            stmt.setString(2, e.getEndereco().getCep());
+            stmt.setString(3, e.getEndereco().getNumero());
+            stmt.setString(4, e.getEndereco().getComplemento());
+            stmt.setString(1, e.getCpf());
             stmt.executeUpdate();
         }catch(SQLException ex){
             throw ex;
+        }finally{
+            if(stmt!=null){
+                stmt.close();
+            }
         }
         
     }
     
+    @Override
     public void inserir(Cliente e) throws Exception {
+        String sql = SQLUtil.getProperties().getProperty("sql.cliente.inserir");
+        Integer i = e.getTipo().ordinal();
         try{
-            String sql = "INSERT INTO TB_CLIENTE VALUES( ? , ? )";
-        //  String sql = "INSERT INTO TB_CLIENE VALUES(? , ? , ? ");
             PreparedStatement stmt = JDBCConnectionUtil.getConnection().prepareStatement(sql);
             stmt.setString(1, e.getCpf());
-            stmt.setString(2, e.getNome());    
-        /*
-            if(e.getTipo()==TipoCliente.CLASS){
-                stmt.setString(3, "1");
-            }else if(e.getTipo()==TipoCliente.STANDARD){
-                stmt2.setString(3, "2");
-            }else{
-                stmt2.setString(3, "3");
-            }
-        */
-            
+            stmt.setString(3, i.toString());
+            stmt.setString(2, e.getNome());                
             stmt.executeUpdate();
             
             if(e.getEndereco()!=null){
@@ -54,48 +52,28 @@ public class RepositorioClienteJDBC implements IRepCliente{
     }
 
     private void atualizarEndereco(Cliente e) throws Exception{
+        String sql = SQLUtil.getProperties().getProperty("sql.endereco.atualizar");
         try{
-            String sql1 = "UPDATE TB_ENDERECO SET CEP = ? WHERE TB_CLIENTE_CPF = ?";
-            String sql2 = "UPDATE TB_ENDERECO SET NUMERO = ? WHERE TB_CLIENTE_CPF = ?";
-            String sql3 = "UPDATE TB_ENDERECO SET COMPLEMENTO = ? WHERE TB_CLIENTE_CPF = ?";
-            PreparedStatement stmt1 = JDBCConnectionUtil.getConnection().prepareStatement(sql1);
-            PreparedStatement stmt2 = JDBCConnectionUtil.getConnection().prepareStatement(sql2);
-            PreparedStatement stmt3 = JDBCConnectionUtil.getConnection().prepareStatement(sql3);
+            PreparedStatement stmt1 = JDBCConnectionUtil.getConnection().prepareStatement(sql);
             stmt1.setString(1, e.getEndereco().getCep());
-            stmt1.setString(2, e.getCpf());
-            stmt2.setString(1, e.getEndereco().getNumero());
-            stmt2.setString(2, e.getCpf());
-            stmt3.setString(1, e.getEndereco().getComplemento());
-            stmt3.setString(2, e.getCpf());
+            stmt1.setString(2, e.getEndereco().getNumero());
+            stmt1.setString(3, e.getEndereco().getComplemento());
+            stmt1.setString(4,e.getCpf());
             stmt1.executeUpdate();
-            stmt2.executeUpdate();
-            stmt3.executeUpdate();
         }catch(SQLException ex){
             throw ex;
         }
     }
     
     public void atualizar(Cliente e) throws Exception {
-        //Tentar depois fazer o atualizar removendo e adicionando outra vez o cliente;
-        
+        String sql = SQLUtil.getProperties().getProperty("jdbc.cliente.atualizar");
+        Integer i= e.getTipo().ordinal();
         try{
-            String sql = "UPDATE TB_CLIENTE SET NOME = ? WHERE CPF = ?";
-        //    String sql2 = "UPDATE TB_CLIENTE SET TIPOCLIENTE = ? WHERE CPF = ? ";
             PreparedStatement stmt = JDBCConnectionUtil.getConnection().prepareStatement(sql);
-        //    PreparedStatement stmt2 = JDBCConnectionUtil.getConnection().prepareStatement(sql2);
             stmt.setString(1, e.getNome());
-            stmt.setString(2, e.getCpf());
-         /*
-            if(e.getTipo()==TipoCliente.CLASS){
-                stmt2.setString(1, "1");
-            }else if(e.getTipo()==TipoCliente.STANDARD){
-                stmt2.setString(1, "2");
-            }else{
-                stmt2.setString(1, "3");
-            }
-        */
+            stmt.setString(2, i.toString());
+            stmt.setString(3, e.getCpf());
             stmt.executeUpdate();
-        //  stmt2.executeUpdate();
             if(e.getEndereco()!=null){
              atualizarEndereco(e);   
             }
@@ -103,15 +81,28 @@ public class RepositorioClienteJDBC implements IRepCliente{
             throw ex;
         }
     }
-
     
-    public void remover(Cliente e) throws Exception {
+    private void removerEndereco(Cliente e) throws Exception{
+        String sql= SQLUtil.getProperties().getProperty("sql.endereco.remover");
         try{
-            String sql= "DELETE FROM TB_CLIENTE WHERE CPF = ?";
+            PreparedStatement stmt = JDBCConnectionUtil.getConnection().prepareStatement(sql);
+            stmt.setString(1,e.getCpf());
+            stmt.executeUpdate();
+        }catch(SQLException ex){
+            throw ex;
+        }
+        
+    }
+
+    public void remover(Cliente e) throws Exception {
+        String sql= SQLUtil.getProperties().getProperty("sql.cliente.remover");
+        try{
             PreparedStatement stmt = JDBCConnectionUtil.getConnection().prepareStatement(sql);
             stmt.setString(1, e.getCpf());
             stmt.executeUpdate();
-            
+            if(e.getEndereco()!=null){
+                removerEndereco(e);
+            }
         }catch(SQLException ex){
             throw ex;
         }
@@ -122,38 +113,31 @@ public class RepositorioClienteJDBC implements IRepCliente{
     public Cliente procurar(String cpf) throws Exception {
         String rsCPF="",rsNOME="";
         TipoCliente tipo= TipoCliente.STANDARD;
+        String sql= SQLUtil.getProperties().getProperty("sql.cliente.procurar");
         try{
-            String sql = "SELECT * FROM TB_CLIENTE WHERE CPF = ?";
             PreparedStatement stmt = JDBCConnectionUtil.getConnection().prepareStatement(sql);
             stmt.setString(1, cpf);
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
                 rsCPF = rs.getString("CPF");
                 rsNOME = rs.getString("NOME");
-                /*
-                if(rs.getString("TIPOCLIENTE")=="1"){
-                    tipo = TipoCliente.CLASS;
-                }else if(rs.getString("TIPOCLIENTE")=="2"){
-                    tipo = TipoCliente.STANDARD;
-                }else{
-                    tipo = TipoCliente.VIP;
-                }
-                */
-                
+                Integer i = Integer.parseInt(rs.getString("TIPO"));
+                tipo = TipoCliente.values()[i];
             }
-           
+            return new Cliente(rsCPF,rsNOME,tipo,procurarEndereco(cpf));
         }catch(SQLException ex){
             throw ex;
         }finally{
-            return new Cliente(rsCPF,rsNOME,tipo,procurarEndereco(cpf));
+
         }
         
     }
     
     private EnderecoCliente procurarEndereco(String cpf){
         String rsCEP="",rsNUMERO="",rsCOMP="";
+        String sql= SQLUtil.getProperties().getProperty("sql.endereco.procurar");
         try{
-            String sql ="SELECT * FROM TB_ENDERECO WHERE TB_CLIENTE_CPF = ?";
+
             PreparedStatement stmt = JDBCConnectionUtil.getConnection().prepareStatement(sql);
             stmt.setString(1, cpf);
             ResultSet rs = stmt.executeQuery();
@@ -162,10 +146,11 @@ public class RepositorioClienteJDBC implements IRepCliente{
                 rsNUMERO= rs.getString("NUMERO");
                 rsCOMP = rs.getString("COMPLEMENTO");
             }
+            return new EnderecoCliente(rsCEP,rsNUMERO,rsCOMP,cpf);
         }catch(SQLException ex){
             throw ex;
         }finally{
-            return new EnderecoCliente(rsCEP,rsNUMERO,rsCOMP);
+            return new EnderecoCliente(rsCEP,rsNUMERO,rsCOMP,cpf);
         }
         
     }

@@ -2,7 +2,10 @@ package br.com.fwintbank.model;
 
 import br.com.fwintbank.exceptions.SaldoInsuficienteException;
 import br.com.fwintbank.model.Cliente;
+import javax.persistence.*;
 
+@Entity
+@DiscriminatorValue("0")
 public class Conta extends ContaAbstrata {
 
     public Conta(String numero, Cliente cliente) {
@@ -12,6 +15,11 @@ public class Conta extends ContaAbstrata {
     public Conta(String numero, double saldo, Cliente cliente, ContasEnum tipo) {
         super(numero, saldo, cliente, tipo);
     }
+
+    public Conta() {
+        super();
+    }
+    
 
     @Override
     public void debitar(double quantia) throws Exception{

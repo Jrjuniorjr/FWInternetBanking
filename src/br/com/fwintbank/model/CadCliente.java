@@ -1,8 +1,9 @@
 package br.com.fwintbank.model;
 
 public class CadCliente extends CadGen<Cliente>{
-   private IRepCliente irep;
+   private IRepCliente repositorio;
    public CadCliente(IRepCliente i){
-       this.irep= i;
+       super(i);
+       this.repositorio= i;
    }    
 }

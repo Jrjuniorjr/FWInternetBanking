@@ -3,6 +3,9 @@ package br.com.fwintbank.model;
 public abstract class CadGen<E> {
     private IRepGen<E> repositorio;
     
+    protected CadGen(IRepGen<E> e){
+        repositorio=e;
+    }
     
     public void inserir(E e) throws Exception{
         repositorio.inserir(e);   
